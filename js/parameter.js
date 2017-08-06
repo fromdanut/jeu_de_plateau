@@ -1,0 +1,1 @@
+var DIMENSSION_CARTE = 10;
