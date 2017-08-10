@@ -1,0 +1,25 @@
+
+.div {
+    margin: 0px;
+    padding: 0px;
+
+}
+
+#plateau {
+    width: 530px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.clickable {
+    background-color: pink;
+}
+
+.cellule {
+    border: solid black 1px;
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    margin: 0px;
+    padding: 0px;
+}

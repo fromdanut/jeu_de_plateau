@@ -1,208 +1,257 @@
 /*
     Prototype du maitre du jeu. C'est lui qui coordonne
     l'ensemble du jeu.
-    Il place les cases sur la carte,
+    Il place les cellules sur le plateau,
     fait se déplacer les joueurs, fait les combats.
 */
 
 var MaitreDuJeu = {
-    initMaitreDuJeu: function(armes, joueurs, obstacles, carte) {
+
+    plateau: [],
+
+    LARGEUR_PLATEAU : 10,
+    NB_CASE: 100,
+    NB_JOUEUR: 2,
+    NB_ARME: 3,
+    NB_OBSTACLE: 12,
+    NB_CASE_VIDE: 85,
+
+    setPageGenerateur: function(pageGenerateur) {
+        this.pageGenerateur = pageGenerateur;
+    },
+
+    getPageGenerateur: function() {
+        return this.pageGenerateur;
+    },
+
+    demanderActionPG: function() {
+        this.getPageGenerateur().dessinerPlateau(this.getPlateau());
+    },
+
+    init: function(plateau, joueurs) {
         this.tour = 0;
-        this.setarmes(armes);
+        this.setPlateau(plateau);
         this.setJoueurs(joueurs);
-        this.setObstacles(obstacles);
-        this.setCarte(this.creerCarte());
-        this.setJoueurActif(this.joueurs[0]);
-        this.positionnerCase(this.joueurs[0]);
-    }
+        this.placerJoueurs();
+    },
 
-    getTour = function() {
+    getTour: function() {
         return this.tour;
-    }
+    },
 
-    setTour = function(tour) {
-        if (tour.isPrototypeOf(Number)) {
+    setTour: function(tour) {
+        if (typeof tour === 'number') {
             this.tour = tour;
         }
         else {
             console.log("Operation impossible : argument tour invalide.");
         }
-    }
-
-    getArmes: function() {
-        return this.armes;
-    }
-
-    setArmes: function(armes) {
-        if (armes.isPrototypeOf(Array)) {
-            this.armes = armes;
-        }
-        else {
-            console.log("Operation impossible : argument armes invalide.");
-        }
-    }
+    },
 
     getJoueurs: function() {
         return this.joueurs;
-    }
+    },
 
     setJoueurs: function(joueurs) {
-        if (joueurs.isPrototypeOf(Array)) {
+        if (joueurs instanceof Array) {
+            joueurs.forEach(function(joueur) {
+                if (!Joueur.isPrototypeOf(joueur)) {
+                    console.log("Operation impossible : argument joueur invalide.");
+                    return false
+                }
+            });
             this.joueurs = joueurs;
         }
         else {
             console.log("Operation impossible : argument joueurs invalide.");
         }
-    }
+    },
 
-    getObstacles: function() {
-        return this.obstacles;
-    }
+    getPlateau: function() {
+        return this.plateau;
+    },
 
-    setObstacles: function(obstacles) {
-        if (obstacles.isPrototypeOf(Array)) {
-            this.obstacles = obstacles;
+    setPlateau: function(plateau) {
+        if (plateau instanceof Array) {
+            plateau.forEach(function(conteneur) {
+                if (conteneur instanceof Array) {
+                    if (!Cellule.isPrototypeOf(conteneur[0])) {
+                        console.log("Operation impossible : argument cellule invalide.");
+                        return false;
+                    }
+                }
+                else {
+                    console.log("Operation impossible : argument conteneur invalide.");
+                    return false;
+                }
+            });
+            this.plateau = plateau;
         }
         else {
-            console.log("Operation impossible : argument obstacles invalide.");
-        }
-    }
-
-    getCarte: function() {
-        return this.carte;
-    }
-
-    setCarte: function(carte) {
-        if (carte.isPrototypeOf(Carte)) {
-            this.carte = carte;
-        }
-        else {
-            console.log("Operation impossible : argument carte invalide.");
-        }
-    }
-
-    creerCarte: function() {
-        pions = this.joueurs + this.armes + this.obstacles;
-        carte = Object.create(Carte);
-        carte.initCarte(DIMENSSION_CARTE, pions);
-        return carte;
-    }
-
-    getJoueurActif: function() {
-        return this.joueurActif;
-    }
-
-    setJoueurActif: function(joueur) {
-        if (joueur.isPrototypeOf(Joueur)) {
-            this.joueur = joueur;
-        }
-        else {
-            console.log("Operation impossible : argument joueur invalide.");
-        }
-    }
-
-    /*
-        Parcours une direction a partir de la position du joueur actif (japos).
-        Met l'attribut case accessible à true.
-    */
-    trouverCaseAccessible: function(direction, position) {
-        for (var i = 0; i < 3; i++) {
-            var positionCherchee = Object.create(Position);
-            switch (direction) {
-                case "n": // nord
-                    positionCherchee.initPosition(position.getX(),
-                                                  position.getY() + i);
-                    break;
-                case "s": // sud
-                    positionCherchee.initPosition(position.getX(),
-                                                  position.getY() - i);
-                    break;
-                case "e": // est
-                    positionCherchee.initPosition(position.getX() + i,
-                                                  position.getY());
-                    bpositionChercheereak;
-                case "o": // ouest
-                    positionCherchee.initPosition(position.getX() - i,
-                                                  position.getY());
-                    break;
-                default:
-                    break;
-            }
-            // Stop la boucle si la case n'est pas vide (le joueur est bloqué).
-            var case = this.carte.trouver(positionCherchee);
-            if (!case.isPrototypeOf(Vide)) {
-                break;
-            }
-            // Si c'est une case vide, elle devient accessible au joueurActif.
-            else {
-                case.setAccessible(true);
-            }
-        }
-
-    }
-
-    /*
-        Remet toutes les cases vide à inaccessible, puis rend accessible les
-        case vide sur lesquels le joueur actif peut se déplacer.
-    */
-    identifierCasesAccessibles: function() {
-        // Supprimer les cases accessibles du joueur devenu inactif.
-        this.carte.parcourir(function(case)) {
-            if (case.isPrototypeOf(Vide)) {
-                case.setAccessible(false);
-            }
-        });
-
-        // Ajouter les cases accessibles du joueur actif.
-        directions = ["n", "s", "e", "o"];
-        directions.forEach(function(direction) {
-            this.trouverCaseAccessible(direction, this.joueur.Actif.getPosition());
-        }
-
-    }
-
-    /*
-        Affecte une case à une position sur la carte.
-    */
-    affecterCase: function(case, position) {
-        // Vérifie qu'on passe un prototype de Case en argument.
-        if (!case.isPrototypeOf(Case)) {
-            console.log("Operation impossible : argument case invalide.");
+            console.log("Operation impossible : argument plateau invalide.");
             return false;
         }
-        // Vérifie qu'on passe un prototype de Carte en argument.
-        if (!position.isPrototypeOf(Position)) {
+    },
+
+    /*
+        Place les deux joueurs au hasard sur une plateau.
+    */
+    placerJoueurs: function(){
+        this.joueurs.forEach(function(joueur) {
+            // Obtenir une position aléatoire sur 100 (normalement sur NB_CASE)
+            var position = Math.floor(Math.random() * 100);
+
+            // S'il n'y a qu'une cellule sur à cette position (et pas l'autre joueur)
+            if (this.plateau[position].length === 1) {
+                this.plateau[position].push(joueur);
+                // Met à jour la position du joueur.
+                joueur.setPosition(position);
+            }
+        });
+    },
+
+    /*
+        Retourne le joueur actif.
+    */
+    getJoueurActif: function() {
+        for (var i = 0; i < this.joueurs.length; i++) {
+            if (this.joueurs[i].getActif()) {
+                return this.joueurs[i];
+            }
+        }
+    },
+
+    /*
+        Deplace un joueur à une position.
+        La position correspond à l'indice du plateau.
+    */
+    deplacer: function(joueur, position) {
+        // Vérifie qu'on passe un prototype de Joueur en argument.
+        if (!Joueur.isPrototypeOf(joueur)) {
+            console.log("Operation impossible : argument joueur invalide.");
+            return false;
+        }
+        // Vérifie qu'on passe un prototype de Plateau en argument.
+        if (typeof position !== 'number') {
             console.log("Operation impossible : argument position invalide.");
             return false;
         }
+        // Vérifie que la position est dans les limites du plateau.
+        if (position < 0 || position > this.NB_CASE) {
+            console.log("Operation impossible : position hors de la plateau.");
+        }
+        else {
+            // Enlève le joueur de son ancienne position et le met sur sa nouvelle.
+            var anciennePosition = joueur.getPosition();
+            this.getPlateau()[position].push(this.getPlateau()[anciennePosition].pop());
+            // Met à jour la position du joueur.
+            joueur.setPosition(position);
+        }
+    },
 
-        this.carte.trouver(position) = case;
-    }
+    explorer: function(direction, positionJoueur) {
+        for (var i = 1; i < 4; i++) {
+            // Limites des positions.
+            var min = 0
+            var max = 99
+            // Redéfinie min/max si besoin et calcule position cible pour chaque direction.
+            switch (direction) {
+                case "n":
+                    var indice = positionJoueur - (i * 10);
+                    console.log(indice);
+                    break;
+                case "s":
+                    var indice = positionJoueur + (i * 10);
+                    console.log(indice);
+                    break;
+                case "e":
+                    // Arrondi à la dizaine inférieure.
+                    max = Number(String(positionJoueur)[0] + "9");
+                    var indice = positionJoueur + i;
+                    console.log(indice);
+                    break;
+                case "o":
+                    // Arrondie à la dizaine inférieure.
+                    min = Number(String(positionJoueur)[0] + "0");
+                    var indice = positionJoueur - i;
+                    console.log(indice);
+                    break;
+                default:
+                    console.log("Operation impossible : argument direction invalide.");
+            }
+
+
+            // Stop l'exploration si l'indice pointe en dehors des limites du plateau
+            if (indice > max || indice < min) {
+                break;
+            }
+
+            // Stop l'exploration si l'indice pointe en dehors des limites du plateau
+            var cellule = this.getPlateau()[indice][0];
+            if (Obstacle.isPrototypeOf(cellule)) {
+                break;
+            }
+
+            // Rend la cellule accessible.
+            cellule.setAccessible(true);
+        }
+    },
+    /*
+        Met à innaccessible toutes les cellules vides puis recalcule les cellules
+        vides accessibles pour le joueur actif.
+    */
+    genererCelluleAccessible: function() {
+        // Rend innaccessible toutes les cellules.
+        this.getPlateau().forEach(function(conteneur) {
+            var cellule = conteneur[0]
+            if (cellule.getAccessible()) {
+                cellule.setAccessible(false);
+            }
+        });
+
+        // Trouver la position du joueur actif
+        var joueurActif = this.getJoueurActif();
+        var positionJoueur = joueurActif.getPosition();
+
+        // Parcours les quatres direction: nord, sud, est et ouest.
+        var directions = ["n", "s", "e", "o"];
+        for (var i = 0; i < directions.length; i++) {
+            this.explorer(directions[i], positionJoueur);
+        }
+    },
 
     /*
-        Se base sur modulo de 2 sur le nombre de tour, cela
-        fonctionne donc uniquement avec 2 joueurs.
+        Ne fonctionne que pour 2 joueurs.
     */
     changerJoueurActif: function() {
-        var i = this.getTour() % 2;
-        setJoueurActif(this.getJoueurs()[i]);
-    }
+        this.getJoueurs().forEach(function(joueur) {
+            if (joueur.getActif()) {
+                joueur.setActif(false);
+            }
+            else {
+                joueur.setActif(true);
+            }
+        });
+    },
 
     /*
-        Jouer un tour consiste à mettre en oeuvre l'action du joueur actif.
+        Jouer un tour consiste à mettre en oeuvre un déplacement du joueur actif.
     */
     jouerTour: function(position) {
-        // Remplace l'ancienne position joueur par une case vide.
-        var vide = Object.create(Vide);
-        this.affecterCase(vide, joueurActif.getPosition());
-        // Place le joueur sur sa nouvelle position.
-        this.affecterCase(this.joueurActif, position);
-        // Calculer les nouvelles cases accessibles.
-        this.identifierCasesAccessibles();
+        if (typeof position !== 'number') {
+            console.log("Operation impossible : argument position invalide.");
+            return false;
+        }
+        // Déplacer le joueur actif.
+        this.deplacer(this.getJoueurActif(), position);
         // Incrémente l'attribut tour.
         var newTour = this.getTour() + 1
         this.setTour(newTour);
         // Change le joueur actif.
         this.changerJoueurActif();
-    }
-}
+        // Calculer les nouvelles cellules accessibles.
+        this.genererCelluleAccessible();
+    },
+
+    
+};
