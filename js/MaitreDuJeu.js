@@ -139,31 +139,30 @@ MaitreDuJeu.deplacer = function(joueur, position) {
 }
 
 MaitreDuJeu.explorer = function(direction, positionJoueur) {
-    for (var i = 1; i < 4; i++) {
+    for (var i = 1; i < this.getControlleur().getParametre().DISTANCE_DEPLACEMENT + 1; i++) {
         // Limites des positions.
         var min = 0
         var max = 99
-        // Redéfinie min/max si besoin et calcule position cible pour chaque direction.
+        var posSplit = String(positionJoueur).split('');
+        // Redéfini min/max si besoin et calcule position cible pour chaque direction.
         switch (direction) {
             case "n":
                 var indice = positionJoueur - (i * 10);
-                //console.log(indice);
                 break;
             case "s":
                 var indice = positionJoueur + (i * 10);
-                //console.log(indice);
                 break;
             case "e":
-                // Arrondi à la dizaine inférieure.
-                max = Number(String(positionJoueur)[0] + "9");
+                // pos = 16 --> max = 19
+                posSplit[posSplit.length - 1] = String(9);
+                max = posSplit.join('');
                 var indice = positionJoueur + i;
-                //console.log(indice);
                 break;
             case "o":
-                // Arrondie à la dizaine inférieure.
-                min = Number(String(positionJoueur)[0] + "0");
+                // pos = 16 --> min = 10
+                posSplit[posSplit.length - 1] = String(0);
+                min = posSplit.join('');
                 var indice = positionJoueur - i;
-                //console.log(indice);
                 break;
             default:
                 console.log("Operation impossible : argument direction invalide.");

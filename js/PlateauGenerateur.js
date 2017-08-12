@@ -4,13 +4,6 @@
 
 var PlateauGenerateur = Object.create(Composant);
 
-PlateauGenerateur.LARGEUR_PLATEAU  = 10;
-PlateauGenerateur.NB_CASE = 100;
-PlateauGenerateur.NB_JOUEUR = 2;
-PlateauGenerateur.NB_ARME = 3;
-PlateauGenerateur.NB_OBSTACLE = 12;
-PlateauGenerateur.NB_CASE_VIDE = 85;
-
 PlateauGenerateur.melanger = function(array) {
   var indexCourant = array.length, valeurTemporaire, indexHasard;
 
@@ -52,9 +45,9 @@ PlateauGenerateur.ajouter = function(nbCellule, typeCellule, plateau) {
 PlateauGenerateur.creerPlateau = function() {
     var plateau = [];
 
-    this.ajouter(this.NB_CASE_VIDE, "vide", plateau);
-    this.ajouter(this.NB_OBSTACLE, "obstacle", plateau);
-    this.ajouter(this.NB_ARME, "arme", plateau);
+    this.ajouter(this.getControlleur().getParametre().NB_VIDE, "vide", plateau);
+    this.ajouter(this.getControlleur().getParametre().NB_OBSTACLE, "obstacle", plateau);
+    this.ajouter(this.getControlleur().getParametre().NB_ARME, "arme", plateau);
 
     this.melanger(plateau);
     return plateau;

@@ -6,11 +6,9 @@
 
 var Joueur = Object.create(Composant);
 
-Joueur.JOUEUR_COULEUR = 'blue';
-
 Joueur.init = function(controlleur, arme, actif=false) {
     this.initComposant(controlleur)
-    this.setCouleur(this.JOUEUR_COULEUR);
+    this.setCouleur(this.getControlleur().getParametre().JOUEUR_COULEUR);
     this.setArme(arme);
     this.vie = 100;
     this.setActif(actif);

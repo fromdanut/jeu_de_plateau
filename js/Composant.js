@@ -18,12 +18,11 @@ var Composant = {
         }
         else {
             console.log("Operation impossible : argument Controlleur invalide.");
-            console.log(controlleur);
-            console.log(typeof controlleur);
         }
     },
 
     getControlleur: function() {
         return this.controlleur;
     },
+
 };

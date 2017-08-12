@@ -1,14 +1,21 @@
 var Controlleur = {
 
-    NB_JOUEUR: 2,
-
     init: function() {
+        this.setParametre();
         this.setFabrique();
-        this.setPlateauGenerateur();
         this.setPlateau();
         this.setJoueurs();
         this.setMaitreDuJeu();
         this.setPageGenerateur();
+    },
+
+    setParametre: function() {
+        // Les parametres sont définis dans parametre.js (1er fichier sourcé).
+        this.parametre = parametre;
+    },
+
+    getParametre: function() {
+        return this.parametre;
     },
 
     setFabrique: function() {
@@ -27,17 +34,10 @@ var Controlleur = {
         return this.fabrique;
     },
 
-    setPlateauGenerateur: function() {
-        this.plateauGenerateur = this.getFabrique().creerPlateauGenerateur();
-        console.log("Fin controlleur.setPlateauGenerateur");
-    },
-
-    getPlateauGenerateur: function() {
-        return this.plateauGenerateur;
-    },
-
     setPlateau: function() {
-        this.plateau = this.getPlateauGenerateur().creerPlateau();
+        // On utilise le générateur de plateau pour fabriquer le plateau.
+        var plateauGenerateur = this.getFabrique().creerPlateauGenerateur();
+        this.plateau = plateauGenerateur.creerPlateau();
         console.log("Fin controlleur.setPlateauGenerateur");
     },
 
@@ -46,9 +46,10 @@ var Controlleur = {
     },
 
     setJoueurs: function() {
+        // Joueurs est une liste de joueurs.
         console.log("Début controlleur.setJoueurs");
         this.joueurs = [];
-        for (var i = 0; i < this.NB_JOUEUR; i++) {
+        for (var i = 0; i < this.getParametre().NB_JOUEUR; i++) {
             var joueur = this.getFabrique().creerJoueur()
             this.joueurs.push(joueur);
         }

@@ -4,13 +4,9 @@
 
 var Cellule = Object.create(Composant);
 
-Cellule.CELLULE_COULEUR = 'rgba(120, 120, 120)';
-Cellule.ARME_COULEUR = 'rgba(100, 120, 0)';
-Cellule.OBSTACLE_COULEUR = 'rgba(0, 0, 0)';
-
 Cellule.initCellule = function(controlleur) {
     this.initComposant(controlleur);
-    this.setCouleur(this.CELLULE_COULEUR);
+    this.setCouleur(this.getControlleur().getParametre().CELLULE_COULEUR);
     this.setAccessible();
     this.setPosition();
 }
@@ -71,7 +67,7 @@ Cellule.setPosition = function(position=0) {
 var Arme = Object.create(Cellule);
 Arme.init = function(controlleur, degat) {
     this.initCellule(controlleur);
-    this.setCouleur(this.ARME_COULEUR);
+    this.setCouleur(this.getControlleur().getParametre().ARME_COULEUR);
     this.setDegat(degat);
 }
 
@@ -95,7 +91,7 @@ Arme.setDegat = function(degat=10){
 var Obstacle = Object.create(Cellule);
 Obstacle.init = function(controlleur) {
     this.initCellule(controlleur);
-    this.setCouleur(this.OBSTACLE_COULEUR);
+    this.setCouleur(this.getControlleur().getParametre().OBSTACLE_COULEUR);
 }
 
 Obstacle.setAccessible = function(accessible) {
