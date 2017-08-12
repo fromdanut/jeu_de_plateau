@@ -1,87 +1,66 @@
 /*
-    Cellule est un élément d'une carte. Elle peut-être accessible.
+    Cellule est un élément du plateau. Elle hérite de compossant.
 */
 
-var Cellule = {
-    CASE_URL: "../img/cellule.png",
-    ARME_URL: "../img/arme.png",
-    OBSTACLE_URL: "../img/obstacle.png",
+var Cellule = Object.create(Composant);
 
-    CELLULE_COULEUR: 'grey',
-    ARME_COULEUR: 'green',
-    OBSTACLE_COULEUR: 'black',
+Cellule.CELLULE_COULEUR = 'rgba(120, 120, 120)';
+Cellule.ARME_COULEUR = 'rgba(100, 120, 0)';
+Cellule.OBSTACLE_COULEUR = 'rgba(0, 0, 0)';
 
-    initCellule: function() {
-        this.setUrlImage(this.CASE_URL);
-        this.setCouleur(this.CELLULE_COULEUR);
-        this.setAccessible();
-        this.setPosition();
-    },
+Cellule.initCellule = function(controlleur) {
+    this.initComposant(controlleur);
+    this.setCouleur(this.CELLULE_COULEUR);
+    this.setAccessible();
+    this.setPosition();
+}
 
-    init: function() {
-        this.initCellule();
-    },
+Cellule.init = function(controlleur) {
+    this.initCellule(controlleur);
+}
 
-    getUrlImage: function() {
-        return this.urlImage;
-    },
+Cellule.getCouleur = function() {
+    return this.couleur;
+}
 
-    setUrlImage: function(urlImage){
-        // Ajouter ici un vérificateur d'url.
-        if (typeof urlImage === 'string') {
-            this.urlImage = urlImage;
-        }
-        else {
-            console.log("Operation impossible car l'argument urlImage n'est pas une String");
-        }
-    },
+Cellule.setCouleur = function(couleur){
+    // Ajouter ici un vérificateur d'couleur.
+    if (typeof couleur === 'string') {
+        this.couleur = couleur;
+    }
+    else {
+        console.log("Operation impossible car l'argument couleur n'est pas une String");
+    }
+}
 
-    getCouleur: function() {
-        return this.couleur;
-    },
+Cellule.getAccessible = function() {
+    return this.accessible;
+}
 
-    setCouleur: function(couleur){
-        // Ajouter ici un vérificateur d'couleur.
-        if (typeof couleur === 'string') {
-            this.couleur = couleur;
-        }
-        else {
-            console.log("Operation impossible car l'argument couleur n'est pas une String");
-        }
-    },
+Cellule.setAccessible = function(accessible = false) {
+    if (typeof accessible === "boolean") {
+        this.accessible = accessible;
+    }
+    else {
+        console.log("Operation impossible : argument accessible invalide.");
+    }
+}
 
-    getAccessible: function() {
-        return this.accessible;
-    },
+Cellule.getPosition = function() {
+    return this.position;
+}
 
-    setAccessible: function(accessible = false) {
-        if (typeof accessible === "boolean") {
-            this.accessible = accessible;
-        }
-        else {
-            console.log("Operation impossible : argument accessible invalide.");
-        }
-    },
-
-    getPosition: function() {
-        return this.position;
-    },
-
-    /*
-        Par défault la position vaut null, c'est le maitre du jeu qui positionne
-        les cellules.
-    */
-    setPosition: function(position=null) {
-        if (typeof position === Number){
-            this.position = position
-        }
-        else if(position === null) {
-            this.position = null;
-        }
-        else {
-            console.log("Operation impossible : argument position invalide.");
-        }
-    },
+/*
+    Par défault la position vaut 0, c'est le maitre du jeu qui positionne
+    les cellules.
+*/
+Cellule.setPosition = function(position=0) {
+    if (typeof position === 'number'){
+        this.position = position;
+    }
+    else {
+        console.log("Operation impossible : argument position invalide.");
+    }
 }
 
 /*
@@ -90,9 +69,8 @@ var Cellule = {
 */
 
 var Arme = Object.create(Cellule);
-Arme.init = function(degat) {
-    this.initCellule();
-    this.setUrlImage(this.ARME_URL);
+Arme.init = function(controlleur, degat) {
+    this.initCellule(controlleur);
     this.setCouleur(this.ARME_COULEUR);
     this.setDegat(degat);
 }
@@ -115,11 +93,9 @@ Arme.setDegat = function(degat=10){
 */
 
 var Obstacle = Object.create(Cellule);
-Obstacle.init = function() {
-    this.initCellule();
-    this.setUrlImage(this.OBSTACLE_URL);
+Obstacle.init = function(controlleur) {
+    this.initCellule(controlleur);
     this.setCouleur(this.OBSTACLE_COULEUR);
-
 }
 
 Obstacle.setAccessible = function(accessible) {
