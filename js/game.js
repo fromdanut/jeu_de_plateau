@@ -4,4 +4,4 @@ controlleur.init();
 console.log("Fin initialisation du controleur, controleur :");
 console.log(controlleur);
 
-controlleur.getPageGenerateur().dessinerPlateau(controlleur.getPlateau());
+controlleur.getPage().dessinerPlateau(controlleur.getPlateau());

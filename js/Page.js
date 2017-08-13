@@ -2,7 +2,7 @@
   * L'objet Page Generateur va modifier la page html via le DOM.
   */
 
-var PageGenerateur = Object.create(Composant);
+var Page = Object.create(Composant);
 
 /**
   * Rend une color rga 'rga(xxx,xxx,xxx)' transparante by adding ', 0.x)'.
@@ -10,7 +10,7 @@ var PageGenerateur = Object.create(Composant);
   * @param	    {String}	couleur	La couleur sous forme 'rga(xxx,xxx,xxx)'.
   * @returns	{String}			La couleur sous forme 'rga(xxx,xxx,xxx,x.x)'.
   */
-PageGenerateur.floutter = function(couleur) {
+Page.floutter = function(couleur) {
     if (typeof couleur !== 'string') {
         console.log("Operation impossible : argument color invalide.");
     }
@@ -27,7 +27,7 @@ PageGenerateur.floutter = function(couleur) {
   * @param	 {Number}	position    La couleur sous forme 'rga(xxx,xxx,xxx)'.
   * @returns {Element}              L'élément cellule.
   */
-PageGenerateur.creerCelluleElt = function(cellule, position) {
+Page.creerCelluleElt = function(cellule, position) {
     // Créé le conteneur
     var celluleElt = document.createElement("div");
     celluleElt.classList.add("cellule");
@@ -64,7 +64,7 @@ PageGenerateur.creerCelluleElt = function(cellule, position) {
   * @param	 {Array}	plateau	    Le plateau du jeu.
   * @returns {void}
   */
-PageGenerateur.dessinerPlateau = function(plateau) {
+Page.dessinerPlateau = function(plateau) {
     if (plateau instanceof Array) {
 
         // Enlève l'ensemble des cellules.
@@ -72,7 +72,6 @@ PageGenerateur.dessinerPlateau = function(plateau) {
         while(plateauElt.lastChild) {
             plateauElt.removeChild(plateauElt.lastChild);
         }
-
         // Ajoute l'ensemble des cellules.
         for (var position = 0; position < plateau.length; position++) {
             // S'il y a un joueur.

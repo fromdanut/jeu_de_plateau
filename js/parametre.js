@@ -7,7 +7,7 @@ var parametre = {
 
     // Parametre globaux, concerne surtout le controlleur.
     NB_JOUEUR: 2,
-    DISTANCE_DEPLACEMENT: 1,
+    DISTANCE_DEPLACEMENT: 3,
 
     // Pour l'affichage des cellules.
     CELLULE_COULEUR: 'rgba(120, 120, 120)',
@@ -17,6 +17,7 @@ var parametre = {
 
     // Dimenssion du plateau pour le plateau Generateur (!!TOTAL = 100 !!)
     LARGEUR_PLATEAU: 10,
+    NB_CELLULE: 100,
     NB_ARME: 3,
     NB_OBSTACLE: 12,
     NB_VIDE: 85

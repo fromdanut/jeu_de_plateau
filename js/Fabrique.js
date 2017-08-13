@@ -61,14 +61,14 @@ Fabrique.creerMaitreDuJeu = function(plateau, joueurs) {
 }
 
 /**
-  * Créer le page générateur.
+  * Créer la page générateur.
   *
-  * @returns	{PageGenerateur}    Le page générateur.
+  * @returns	{Page}    Le page générateur.
   */
-Fabrique.creerPageGenerateur = function() {
-    pageGenerateur = Object.create(PageGenerateur);
-    pageGenerateur.init(this.getControlleur());
-    return pageGenerateur;
+Fabrique.creerPage = function() {
+    page = Object.create(Page);
+    page.init(this.getControlleur());
+    return page;
 }
 
 /**

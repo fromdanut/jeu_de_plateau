@@ -13,7 +13,7 @@ var Controlleur = {
         this.setPlateau();
         this.setJoueurs();
         this.setMaitreDuJeu();
-        this.setPageGenerateur();
+        this.setPage();
     },
 
     setParametre: function() {
@@ -51,8 +51,7 @@ var Controlleur = {
     },
 
     setJoueurs: function() {
-        // Joueurs est une liste de joueurs.
-        console.log("Début controlleur.setJoueurs");
+        // Joueurs est un tableau de joueurs.
         this.joueurs = [];
         for (var i = 0; i < this.getParametre().NB_JOUEUR; i++) {
             var joueur = this.getFabrique().creerJoueur()
@@ -78,13 +77,13 @@ var Controlleur = {
         return this.maitreDuJeu;
     },
 
-    setPageGenerateur: function() {
-        this.pageGenerateur = this.getFabrique().creerPageGenerateur();
-        console.log("Fin controlleur.setPageGenerateur");
+    setPage: function() {
+        this.page = this.getFabrique().creerPage();
+        console.log("Fin controlleur.setPage");
     },
 
-    getPageGenerateur: function() {
-        return this.pageGenerateur;
+    getPage: function() {
+        return this.page;
     },
 
     /**
@@ -93,6 +92,6 @@ var Controlleur = {
       * @returns	{Void}
       */
     lancerPartie: function() {
-        this.getPageGenerateur().dessinerPlateau(this.getPlateau());
+        this.getPage().dessinerPlateau(this.getPlateau());
     }
 };

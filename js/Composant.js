@@ -1,6 +1,6 @@
 /**
   * Prototype dont tous les composants (cellule, joueurs, plateau,
-  * maitre du jeu et pageGenerateur) du jeux hériteront, afin
+  * maitre du jeu et page) du jeux hériteront, afin
   * d'avoir un accès au controlleur.
   */
 

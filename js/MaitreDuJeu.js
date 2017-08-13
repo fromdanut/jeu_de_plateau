@@ -5,7 +5,7 @@
   */
 
 var MaitreDuJeu = Object.create(Composant);
-MaitreDuJeu. plateau = [];
+MaitreDuJeu.plateau = [];
 
 MaitreDuJeu.LARGEUR_PLATEAU  = 10;
 MaitreDuJeu.NB_CASE = 100;
@@ -82,16 +82,17 @@ MaitreDuJeu.setPlateau = function(plateau) {
 }
 
 /**
-  * Place les joueurs au hasard sur le plateau.
+  * Place les joueurs au hasard sur le plateau, utilisé dans la méthode init.
   *
   * @returns    {Void}
   */
 MaitreDuJeu.placerJoueurs = function(){
+    // Stock le nombre de cellule dans une variable 'nbCellule'.
+    var nbCellule = this.getControlleur().getParametre().NB_CELLULE;
     this.joueurs.forEach(function(joueur) {
-        // Obtenir une position aléatoire sur 100 (normalement sur NB_CASE)
-        var position = Math.floor(Math.random() * 100);
-
-        // S'il n'y a qu'une cellule sur à cette position (et pas l'autre joueur)
+        // Obtenir une position aléatoire sur le plateau.
+        var position = Math.floor(Math.random() * nbCellule);
+        // S'il n'y a que la cellule sur à cette position (et pas l'autre joueur)
         if (this.plateau[position].length === 1) {
             this.plateau[position].push(joueur);
             // Met à jour la position du joueur.
@@ -132,7 +133,7 @@ MaitreDuJeu.deplacer = function(joueur, position) {
         return false;
     }
     // Vérifie que la position est dans les limites du plateau.
-    if (position < 0 || position > this.NB_CASE) {
+    if (position < 0 || position > this.getControlleur().getParametre().NB_CELLULE) {
         console.log("Operation impossible : position hors de la plateau.");
     }
     else {
@@ -145,7 +146,7 @@ MaitreDuJeu.deplacer = function(joueur, position) {
 }
 
 /**
-  * Rend les cellules accessible dans une direction par rapport à la
+  * Rend les cellules accessibles dans une direction par rapport à la
   * position d'un joueur.
   *
   * @param	    {String}	direction	La direction  (nord, sud, est, ouest).
@@ -155,8 +156,8 @@ MaitreDuJeu.deplacer = function(joueur, position) {
 MaitreDuJeu.explorer = function(direction, position) {
     for (var i = 1; i < this.getControlleur().getParametre().DISTANCE_DEPLACEMENT + 1; i++) {
         // Limites des positions.
-        var min = 0
-        var max = 99
+        var min = 0;
+        var max = this.getControlleur().getParametre().NB_CELLULE - 1;
         var posSplit = String(position).split('');
         // Redéfini min/max si besoin et calcule position cible pour chaque direction.
         switch (direction) {
@@ -183,12 +184,12 @@ MaitreDuJeu.explorer = function(direction, position) {
         }
 
 
-        // Stop l'exploration si l'indice pointe en dehors des limites du plateau
+        // Stop l'exploration si l'indice pointe en dehors du plateau...
         if (indice > max || indice < min) {
             break;
         }
 
-        // Stop l'exploration si l'indice pointe en dehors des limites du plateau
+        // ... ou sur un obstacle.
         var cellule = this.getPlateau()[indice][0];
         if (Obstacle.isPrototypeOf(cellule)) {
             break;
@@ -268,5 +269,5 @@ MaitreDuJeu.jouerTour = function(position) {
     // Calculer les nouvelles cellules accessibles.
     this.genererCelluleAccessible();
     // Redessiner le plateau.
-    this.getControlleur().getPageGenerateur().dessinerPlateau(this.getPlateau());
+    this.getControlleur().getPage().dessinerPlateau(this.getPlateau());
 }
