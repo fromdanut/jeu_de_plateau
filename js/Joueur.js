@@ -1,8 +1,8 @@
-/*
-    Prototype du joueur.
-    Il possède une arme, peut attaquer un joueur, subir des dégats,
-    changer d'arme.
-*/
+/**
+  * Prototype qui représente le joueur.
+  * Il possède une arme.
+  * Il peut attaquer un joueur, subir des dégâts.
+  */
 
 var Joueur = Object.create(Composant);
 
@@ -72,34 +72,38 @@ Joueur.getPosition = function() {
     return this.position;
 }
 
-/*
-    Par défault la position vaut null, c'est le maitre du jeu qui positionne
-    les cellules.
-*/
-Joueur.setPosition = function(position=null) {
+/**
+  * Affecte une position (par défault à 0).
+  *
+  * @param      {Boolean}   accessible
+  * @returns	{Void}
+  */
+Joueur.setPosition = function(position=0) {
     if (typeof position === 'number'){
-        this.position = position
-    }
-    else if(position === null) {
-        this.position = null;
+        this.position = position;
     }
     else {
         console.log("Operation impossible : argument position invalide.");
     }
 }
 
-// Quand un joueur attaque une cible subit des dégâts.
+/**
+  * Quant un joueur attaque sa cible subit des dégâts.
+  *
+  * @param      {Joueur}   cible    Le joueur ciblé.
+  * @returns	{Void}
+  */
 Joueur.attaque = function(cible) {
     cible.subir(this.arme.getDegat());
 }
 
-// Quand un joueur subit des dégâts il perd des points de vie.
+/**
+  * Quant un joueur subit des dégât il perd des point de vie.
+  *
+  * @param      {Number}   degat    Le nombre de dégât infligés.
+  * @returns	{Void}
+  */
 Joueur.subir = function(degat) {
     vie = this.vie - degat;
     this.setVie(vie);
-}
-
-// Un joueur peut changer d'arme.
-Joueur.armer = function(arme) {
-    this.setArme = arme;
 }

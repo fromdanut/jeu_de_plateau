@@ -1,9 +1,8 @@
-/*
-    Prototype du maitre du jeu. C'est lui qui coordonne
-    l'ensemble du jeu.
-    Il place les cellules sur le plateau,
-    fait se déplacer les joueurs, fait les combats.
-*/
+/**
+  * Prototype du maitre du jeu. C'est lui qui coordonne l'ensemble du jeu.
+  * Il place les cellules sur le plateau,
+  * fait se déplacer les joueurs, fait les combats.
+  */
 
 var MaitreDuJeu = Object.create(Composant);
 MaitreDuJeu. plateau = [];
@@ -82,9 +81,11 @@ MaitreDuJeu.setPlateau = function(plateau) {
     }
 }
 
-/*
-    Place les deux joueurs au hasard sur une plateau.
-*/
+/**
+  * Place les joueurs au hasard sur le plateau.
+  *
+  * @returns    {Void}
+  */
 MaitreDuJeu.placerJoueurs = function(){
     this.joueurs.forEach(function(joueur) {
         // Obtenir une position aléatoire sur 100 (normalement sur NB_CASE)
@@ -99,9 +100,11 @@ MaitreDuJeu.placerJoueurs = function(){
     });
 }
 
-/*
-    Retourne le joueur actif.
-*/
+/**
+  * Trouve le joueur actif.
+  *
+  * @returns	{Joueur}			Le joueur avec l'attribut actif à True.
+  */
 MaitreDuJeu.getJoueurActif = function() {
     for (var i = 0; i < this.joueurs.length; i++) {
         if (this.joueurs[i].getActif()) {
@@ -110,10 +113,13 @@ MaitreDuJeu.getJoueurActif = function() {
     }
 }
 
-/*
-    Deplace un joueur à une position.
-    La position correspond à l'indice du plateau.
-*/
+/**
+  * Déplace un joueur sur une position du plateau.
+  *
+  * @param	    {Joueur}	joueur	    Le joueur à déplacer.
+  * @param	    {Number}	position	La position (indice du tableau plateau).
+  * @returns	{Void}
+  */
 MaitreDuJeu.deplacer = function(joueur, position) {
     // Vérifie qu'on passe un prototype de Joueur en argument.
     if (!Joueur.isPrototypeOf(joueur)) {
@@ -138,31 +144,39 @@ MaitreDuJeu.deplacer = function(joueur, position) {
     }
 }
 
-MaitreDuJeu.explorer = function(direction, positionJoueur) {
+/**
+  * Rend les cellules accessible dans une direction par rapport à la
+  * position d'un joueur.
+  *
+  * @param	    {String}	direction	La direction  (nord, sud, est, ouest).
+  * @param	    {Number}	position	La position du joueur.
+  * @returns	{Void}
+  */
+MaitreDuJeu.explorer = function(direction, position) {
     for (var i = 1; i < this.getControlleur().getParametre().DISTANCE_DEPLACEMENT + 1; i++) {
         // Limites des positions.
         var min = 0
         var max = 99
-        var posSplit = String(positionJoueur).split('');
+        var posSplit = String(position).split('');
         // Redéfini min/max si besoin et calcule position cible pour chaque direction.
         switch (direction) {
             case "n":
-                var indice = positionJoueur - (i * 10);
+                var indice = position - (i * 10);
                 break;
             case "s":
-                var indice = positionJoueur + (i * 10);
+                var indice = position + (i * 10);
                 break;
             case "e":
                 // pos = 16 --> max = 19
                 posSplit[posSplit.length - 1] = String(9);
                 max = posSplit.join('');
-                var indice = positionJoueur + i;
+                var indice = position + i;
                 break;
             case "o":
                 // pos = 16 --> min = 10
                 posSplit[posSplit.length - 1] = String(0);
                 min = posSplit.join('');
-                var indice = positionJoueur - i;
+                var indice = position - i;
                 break;
             default:
                 console.log("Operation impossible : argument direction invalide.");
@@ -184,10 +198,13 @@ MaitreDuJeu.explorer = function(direction, positionJoueur) {
         cellule.setAccessible(true);
     }
 }
-/*
-    Met à innaccessible toutes les cellules vides puis recalcule les cellules
-    vides accessibles pour le joueur actif.
-*/
+
+/**
+  * Met à innaccessible toutes les cellules vides puis recalcule les cellules
+  * vides accessibles pour le joueur actif.
+  *
+  * @returns	{Void}
+  */
 MaitreDuJeu.genererCelluleAccessible = function() {
     // Rend innaccessible toutes les cellules.
     this.getPlateau().forEach(function(conteneur) {
@@ -208,9 +225,11 @@ MaitreDuJeu.genererCelluleAccessible = function() {
     }
 }
 
-/*
-    Ne fonctionne que pour 2 joueurs.
-*/
+/**
+  * Modifie le joueur actif. Attention, ne fonctionne que pour 2 joueurs !
+  *
+  * @returns	{Void}
+  */
 MaitreDuJeu.changerJoueurActif = function() {
     this.getJoueurs().forEach(function(joueur) {
         if (joueur.getActif()) {
@@ -222,16 +241,23 @@ MaitreDuJeu.changerJoueurActif = function() {
     });
 }
 
-/*
-    Jouer un tour consiste à réagire à un événement e.
-*/
+/**
+  * Jouer un tour consiste à mettre en oeuvre la demande d'action du joueur
+  * actif. Il comprend les étapes suivantes :
+  *   - déplacer le joueur.
+  *   - incrémenter l'attribut tour.
+  *   - changer le joueur actif.
+  *   - générer les nouvelles cellules accessibles.
+  *   - enfin demander au page générateur de déssiner le nouveau plateau.
+  *
+  * @param	    {Number}	position	La position du joueur.
+  * @returns	{Void}
+  */
 MaitreDuJeu.jouerTour = function(position) {
-    if (typeof position ==! 'string') {
+    if (typeof position ==! 'number') {
         console.log("Operation impossible : argument position invalide.");
         return false;
     }
-    // Convertir position en nombre.
-    position = Number(position);
     // Déplacer le joueur actif sur sa nouvelle position
     this.deplacer(this.getJoueurActif(), position);
     // Incrémente l'attribut tour.

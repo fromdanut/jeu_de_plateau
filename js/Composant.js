@@ -1,7 +1,8 @@
-/*
-    Prototype dont tous les composants du jeux hériteront, afin d'avoir un accès
-    au controlleur (cellule, joueurs, plateau, maitre du jeu et pageGenerateur).
-*/
+/**
+  * Prototype dont tous les composants (cellule, joueurs, plateau,
+  * maitre du jeu et pageGenerateur) du jeux hériteront, afin
+  * d'avoir un accès au controlleur.
+  */
 
 var Composant = {
     initComposant: function(controlleur) {
@@ -24,5 +25,4 @@ var Composant = {
     getControlleur: function() {
         return this.controlleur;
     },
-
 };

@@ -1,29 +1,32 @@
-/*
-    L'objet Page va modifier la page html, le DOM.
-*/
+/**
+  * L'objet Page Generateur va modifier la page html via le DOM.
+  */
 
 var PageGenerateur = Object.create(Composant);
 
-PageGenerateur.COULEUR_OBSTACLE = 'black';
-PageGenerateur.COULEUR_ARME = 'green';
-PageGenerateur.COULEUR_CELLULE = 'grey';
-
-/*
-    Rend une color rga 'rga(xxx,xxx,xxx)' transparante by adding ', 0.x)'.
-*/
-PageGenerateur.floutter = function(color) {
-    if (typeof color !== 'string') {
+/**
+  * Rend une color rga 'rga(xxx,xxx,xxx)' transparante by adding ', 0.x)'.
+  *
+  * @param	    {String}	couleur	La couleur sous forme 'rga(xxx,xxx,xxx)'.
+  * @returns	{String}			La couleur sous forme 'rga(xxx,xxx,xxx,x.x)'.
+  */
+PageGenerateur.floutter = function(couleur) {
+    if (typeof couleur !== 'string') {
         console.log("Operation impossible : argument color invalide.");
     }
     else {
-        var newColor = color.slice(0, -1) + ', 0.7)';
-        return newColor;
+        var nouvelleCouleur = couleur.slice(0, -1) + ', 0.7)';
+        return nouvelleCouleur;
     }
 }
 
-/*
-    Créer une cellule d'un plateau.
-*/
+/**
+  * Créer un élément à partir d'une cellule d'un plateau.
+  *
+  * @param	 {Cellule}	cellule	    La cellule modèle pour l'élément.
+  * @param	 {Number}	position    La couleur sous forme 'rga(xxx,xxx,xxx)'.
+  * @returns {Element}              L'élément cellule.
+  */
 PageGenerateur.creerCelluleElt = function(cellule, position) {
     // Créé le conteneur
     var celluleElt = document.createElement("div");
@@ -39,13 +42,11 @@ PageGenerateur.creerCelluleElt = function(cellule, position) {
             celluleElt.style.backgroundColor = this.floutter(celluleElt.style.backgroundColor);
             celluleElt.style.border = 'solid yellow 1px';
             // Rendre le maitre du jeu accessible depuis l'element
-
             celluleElt.maitreDuJeu = this.getControlleur().getMaitreDuJeu();
-            // add eventListener...
             celluleElt.addEventListener("click", function(e) {
                 var position = e.target.id;
                 var MJ = e.target.maitreDuJeu;
-                MJ.jouerTour(position);
+                MJ.jouerTour(Number(position));
             });
         }
     }
@@ -55,10 +56,14 @@ PageGenerateur.creerCelluleElt = function(cellule, position) {
     return celluleElt;
 }
 
-/*
-    Après les avoir supprimé, créer l'ensemble des cellules d'un plateau en
-    utilisant la méthode creerCellule. Puis rajoute les joueurs par dessus.
-*/
+
+/**
+  * Après les avoir supprimé, créer l'ensemble des cellules d'un plateau en
+  * utilisant la méthode creerCellule. Puis rajoute les joueurs par dessus.
+  *
+  * @param	 {Array}	plateau	    Le plateau du jeu.
+  * @returns {void}
+  */
 PageGenerateur.dessinerPlateau = function(plateau) {
     if (plateau instanceof Array) {
 

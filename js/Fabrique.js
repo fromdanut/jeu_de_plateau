@@ -1,14 +1,16 @@
-/*
-    Prototype chargé de créer les composants du programme.
-    C'est lui qui se charge d'affecter le controlleur au composant.
-*/
+/**
+  * Prototype chargé de créer les composants du programme.
+  * C'est lui qui se charge d'affecter le controlleur au composant.
+  */
 
 var Fabrique = Object.create(Composant);
 
-/*
-    Creer une cellule du type choisie.
-    type est une string.
-*/
+/**
+  * Créer une cellule du type demandé.
+  *
+  * @param	    {String}	type	Le type de cellule  (arme, obstacle, ...).
+  * @returns	{Cellule}           La cellule.
+  */
 Fabrique.creerCellule = function(type) {
     switch (type) {
         case "arme":
@@ -33,9 +35,11 @@ Fabrique.creerCellule = function(type) {
     };
 }
 
-/*
-    La fabrique créer un joueur avec son arme directement.
-*/
+/**
+  * Créer un joueur avec une arme de base.
+  *
+  * @returns	{Joueur}    Le joueur.
+  */
 Fabrique.creerJoueur = function() {
     var arme = this.creerCellule("arme");
     var joueur = Object.create(Joueur);
@@ -43,6 +47,11 @@ Fabrique.creerJoueur = function() {
     return joueur;
 }
 
+/**
+  * Créer le maitre du jeu.
+  *
+  * @returns	{MaitreDuJeu}    Le maitre du jeu.
+  */
 Fabrique.creerMaitreDuJeu = function(plateau, joueurs) {
     maitreDuJeu = Object.create(MaitreDuJeu);
     maitreDuJeu.init(controlleur=this.getControlleur(),
@@ -51,12 +60,22 @@ Fabrique.creerMaitreDuJeu = function(plateau, joueurs) {
     return maitreDuJeu;
 }
 
+/**
+  * Créer le page générateur.
+  *
+  * @returns	{PageGenerateur}    Le page générateur.
+  */
 Fabrique.creerPageGenerateur = function() {
     pageGenerateur = Object.create(PageGenerateur);
     pageGenerateur.init(this.getControlleur());
     return pageGenerateur;
 }
 
+/**
+  * Créer le plateau générateur.
+  *
+  * @returns	{PlateauGenerateur}    Le plateau générateur.
+  */
 Fabrique.creerPlateauGenerateur = function() {
     plateauGenerateur = Object.create(PlateauGenerateur);
     plateauGenerateur.init(this.getControlleur());

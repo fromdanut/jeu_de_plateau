@@ -1,3 +1,10 @@
+/**
+  * Prototype chargé de controller les différents composants du programme.
+  * Il est rendu accessible dans l'ensemble des composant.
+  * Il a accès aux parametres.
+  */
+
+
 var Controlleur = {
 
     init: function() {
@@ -19,11 +26,9 @@ var Controlleur = {
     },
 
     setFabrique: function() {
-        /*
-        le controlleur de la fabrique vaut "this". C'est la
-        fabrique qui est chargée de transmettre la référence
-        vers le controlleur à chaque composant.
-        */
+        // Le controlleur de la fabrique vaut "this". C'est la
+        // fabrique qui est chargée de transmettre la référence
+        // vers le controlleur à chaque composant.
         var fabrique = Object.create(Fabrique);
         fabrique.init(this);
         this.fabrique = fabrique;
@@ -82,6 +87,11 @@ var Controlleur = {
         return this.pageGenerateur;
     },
 
+    /**
+      * Lance la partie en demandant au générateur de page de dessinger le plateau.
+      *
+      * @returns	{Void}
+      */
     lancerPartie: function() {
         this.getPageGenerateur().dessinerPlateau(this.getPlateau());
     }

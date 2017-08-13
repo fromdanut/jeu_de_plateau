@@ -1,11 +1,17 @@
-/*
-    Créer le plateau.
-*/
+/**
+  * Prototype du générateur de plateau. Il ne sert qu'une fois pour créer le plateau.
+  */
 
 var PlateauGenerateur = Object.create(Composant);
 
-PlateauGenerateur.melanger = function(array) {
-  var indexCourant = array.length, valeurTemporaire, indexHasard;
+/**
+  * Mélange un tableau.
+  *
+  * @param   {Array}   tableau        Un tableau.
+  * @returns {Arary}                  Le tableau mélangé.
+*/
+PlateauGenerateur.melanger = function(tableau) {
+  var indexCourant = tableau.length, valeurTemporaire, indexHasard;
 
   // Tant qu'il y a un index à mélanger.
   while (0 !== indexCourant) {
@@ -15,18 +21,22 @@ PlateauGenerateur.melanger = function(array) {
     indexCourant -= 1;
 
     // Remplace les deux éléments.
-    valeurTemporaire = array[indexCourant];
-    array[indexCourant] = array[indexHasard];
-    array[indexHasard] = valeurTemporaire;
+    valeurTemporaire = tableau[indexCourant];
+    tableau[indexCourant] = tableau[indexHasard];
+    tableau[indexHasard] = valeurTemporaire;
   }
 
-  return array;
+  return tableau;
 }
 
 
-/*
-    Ajouter un nombre (nbCellule) d'un type de cellule ("arme",
-    "obstacle", "vide") au plateau.
+/**
+  * Ajoute un nombre de cellule au plateau.
+  *
+  * @param   {Number}  nbCellule      Nombre de cellule.
+  * @param   {Cellule} typeCellule    Le type de cellule (arme, obstacle, etc.).
+  * @param   {Array}   plateau        Le plateau.
+  * @returns {Void}
 */
 PlateauGenerateur.ajouter = function(nbCellule, typeCellule, plateau) {
     for (var i = 0; i < nbCellule; i++) {
@@ -38,10 +48,14 @@ PlateauGenerateur.ajouter = function(nbCellule, typeCellule, plateau) {
     }
 }
 
-/*
-    Créé une plateau sur laquelle sont placées les cellules (cellule vide, obstacle,
-    armes).
-*/
+
+/**
+  * Créé une plateau sur laquelle sont placées les cellules.
+  *
+  * @param   {Number}  nbCellule      Nombre de cellule.
+  * @param   {Cellule} typeCellule    Le type de cellule (arme, obstacle, etc.).
+  * @returns {Array}                  Le plateau avec cellules.
+  */
 PlateauGenerateur.creerPlateau = function() {
     var plateau = [];
 

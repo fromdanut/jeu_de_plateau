@@ -1,6 +1,7 @@
-/*
-    Cellule est un élément du plateau. Elle hérite de compossant.
-*/
+/**
+  * Prototype qui représente l'élément le plus petit du plateau. C'est une case
+  * du plateau (nommé cellule car "case" est un mot clé de JavaScript).
+  */
 
 var Cellule = Object.create(Composant);
 
@@ -8,7 +9,6 @@ Cellule.initCellule = function(controlleur) {
     this.initComposant(controlleur);
     this.setCouleur(this.getControlleur().getParametre().CELLULE_COULEUR);
     this.setAccessible();
-    this.setPosition();
 }
 
 Cellule.init = function(controlleur) {
@@ -19,6 +19,12 @@ Cellule.getCouleur = function() {
     return this.couleur;
 }
 
+/**
+  * Affecte une couleur à la cellule.
+  *
+  * @param      {String}   couleur    La couleur de la cellule.
+  * @returns	{Void}
+  */
 Cellule.setCouleur = function(couleur){
     // Ajouter ici un vérificateur d'couleur.
     if (typeof couleur === 'string') {
@@ -33,7 +39,14 @@ Cellule.getAccessible = function() {
     return this.accessible;
 }
 
-Cellule.setAccessible = function(accessible = false) {
+/**
+  * Affecte un attribut accessible qui permettra de gérer les déplacements
+  * des joueurs (à false par défault).
+  *
+  * @param      {Boolean}   accessible
+  * @returns	{Void}
+  */
+Cellule.setAccessible = function(accessible=false) {
     if (typeof accessible === "boolean") {
         this.accessible = accessible;
     }
@@ -42,27 +55,9 @@ Cellule.setAccessible = function(accessible = false) {
     }
 }
 
-Cellule.getPosition = function() {
-    return this.position;
-}
-
-/*
-    Par défault la position vaut 0, c'est le maitre du jeu qui positionne
-    les cellules.
-*/
-Cellule.setPosition = function(position=0) {
-    if (typeof position === 'number'){
-        this.position = position;
-    }
-    else {
-        console.log("Operation impossible : argument position invalide.");
-    }
-}
-
-/*
-    Prototype de l'arme.
-    A seulement un attribut dégat.
-*/
+/**
+  * Prototype de l'arme. Elle a un attribut dégât en plus.
+  */
 
 var Arme = Object.create(Cellule);
 Arme.init = function(controlleur, degat) {
@@ -84,19 +79,17 @@ Arme.setDegat = function(degat=10){
     }
 }
 
-/*
-    Prototype d'un Obstacle.
-*/
-
+/**
+  * Prototype de l'obstacle. Il va bloquer le joueur car l'attribut
+  * accessible vaudra toujours false.
+  */
 var Obstacle = Object.create(Cellule);
+
 Obstacle.init = function(controlleur) {
     this.initCellule(controlleur);
     this.setCouleur(this.getControlleur().getParametre().OBSTACLE_COULEUR);
 }
 
 Obstacle.setAccessible = function(accessible) {
-    if (accessible) {
-        console.log("Un obstacle est toujours innaccessible");
-    }
     this.accessible = false;
 }
