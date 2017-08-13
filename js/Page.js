@@ -5,19 +5,19 @@
 var Page = Object.create(Composant);
 
 /**
-  * Rend une color rga 'rga(xxx,xxx,xxx)' transparante by adding ', 0.x)'.
+  * Floutter un élément cellule accessible.
   *
-  * @param	    {String}	couleur	La couleur sous forme 'rga(xxx,xxx,xxx)'.
-  * @returns	{String}			La couleur sous forme 'rga(xxx,xxx,xxx,x.x)'.
+  * @param	    {Element}	celluleElt	L'élément cellule.
+  * @returns	{Element}		    	L'élément cellule floutté.
   */
-Page.floutter = function(couleur) {
-    if (typeof couleur !== 'string') {
-        console.log("Operation impossible : argument color invalide.");
-    }
-    else {
-        var nouvelleCouleur = couleur.slice(0, -1) + ', 0.7)';
-        return nouvelleCouleur;
-    }
+Page.floutter = function(celluleElt) {
+    // Rend la couleur du fond transparente.
+    var couleur = celluleElt.style.backgroundColor;
+    var nouvelleCouleur = couleur.slice(0, -1) + ', 0.4)';
+    celluleElt.style.backgroundColor = nouvelleCouleur;
+    // Modifie les bordures.
+    celluleElt.style.border = 'solid white 1px';
+    return celluleElt;
 }
 
 /**
@@ -29,7 +29,7 @@ Page.floutter = function(couleur) {
   */
 Page.creerCelluleElt = function(cellule, position) {
     // Créé le conteneur
-    var celluleElt = document.createElement("div");
+    var celluleElt = document.createElement("td");
     celluleElt.classList.add("cellule");
     celluleElt.style.backgroundColor = cellule.getCouleur();
     // Ajoute l'id avec la position ("xy").
@@ -39,14 +39,13 @@ Page.creerCelluleElt = function(cellule, position) {
     if (!Joueur.isPrototypeOf(cellule)) {
         // Vérifie si la cellule est accessible (pour la rendre rose).
         if (cellule.getAccessible()) {
-            celluleElt.style.backgroundColor = this.floutter(celluleElt.style.backgroundColor);
-            celluleElt.style.border = 'solid yellow 1px';
+            // Floutte la cellule accessible pour la rendre visible au joueur.
+            var celluleElt = this.floutter(celluleElt);
             // Rendre le maitre du jeu accessible depuis l'element
             celluleElt.maitreDuJeu = this.getControlleur().getMaitreDuJeu();
             celluleElt.addEventListener("click", function(e) {
                 var position = e.target.id;
-                var MJ = e.target.maitreDuJeu;
-                MJ.jouerTour(Number(position));
+                e.target.maitreDuJeu.jouerTour(Number(position));
             });
         }
     }
@@ -59,32 +58,43 @@ Page.creerCelluleElt = function(cellule, position) {
 
 /**
   * Après les avoir supprimé, créer l'ensemble des cellules d'un plateau en
-  * utilisant la méthode creerCellule. Puis rajoute les joueurs par dessus.
+  * utilisant la méthode creerCellule.
+  * Les cellules sont groupées par ligne (d'une longueur égale à la largeur du
+  * plateau.
+  * Enfin, rajoute les joueurs par dessus.
   *
   * @param	 {Array}	plateau	    Le plateau du jeu.
   * @returns {void}
   */
 Page.dessinerPlateau = function(plateau) {
     if (plateau instanceof Array) {
-
         // Enlève l'ensemble des cellules.
         var plateauElt = document.getElementById("plateau");
         while(plateauElt.lastChild) {
             plateauElt.removeChild(plateauElt.lastChild);
         }
-        // Ajoute l'ensemble des cellules.
-        for (var position = 0; position < plateau.length; position++) {
-            // S'il y a un joueur.
-            if (plateau[position].length > 1) {
-                var cellule = plateau[position][1]; // le joueur.
-            }
-            else {
-                var cellule = plateau[position][0]; // [0] car la cellule est englobée dans une array.
-            }
-            celluleElt = this.creerCelluleElt(cellule, position);
-            plateauElt.appendChild(celluleElt);
-        }
 
+        var largeur = this.getControlleur().getParametre().LARGEUR_PLATEAU;
+        // Ajoute l'ensemble des cellules dans le tableau "plateau".
+        for (var i = 0; i < largeur; i++) {
+            // Une ligne.
+            var ligneElt = document.createElement("tr");
+            for (var j = 0; j < largeur; j++) {
+                // Calcule la position à partir de i et j.
+                var position = i*10 + j;
+                // S'il y a un joueur sur la cellule.
+                if (plateau[position].length > 1) {
+                    var cellule = plateau[position][1]; // le joueur.
+                }
+                else {
+                    var cellule = plateau[position][0]; // la cellule.
+                }
+                // Créé l'élément à partir de la cellule.
+                var celluleElt = this.creerCelluleElt(cellule, position);
+                ligneElt.appendChild(celluleElt);
+            }
+            plateauElt.appendChild(ligneElt);
+        }
     }
     else {
         console.log("Operation impossible : argument plateau invalide.");

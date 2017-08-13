@@ -1,25 +1,20 @@
+.conteneur {
+    margin: auto;
+}
 
-.div {
-    margin: 0px;
-    padding: 0px;
-
+h1 {
+    text-align: center;
 }
 
 #plateau {
-    width: 530px;
-    margin: 0px;
-    padding: 0px;
-}
-
-.clickable {
-    background-color: pink;
+    margin: 80px auto;
+    background: #999;
+    border: 25px solid #333;
+    border-collapse: collapse;
 }
 
 .cellule {
     border: solid black 1px;
-    display: inline-block;
     height: 50px;
     width: 50px;
-    margin: 0px;
-    padding: 0px;
 }
