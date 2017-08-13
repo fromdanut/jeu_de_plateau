@@ -9,11 +9,13 @@ var parametre = {
     NB_JOUEUR: 2,
     DISTANCE_DEPLACEMENT: 3,
 
-    // Pour l'affichage des cellules.
+    // Pour la création des cellules.
     CELLULE_COULEUR: 'rgba(120, 120, 120)',
     ARME_COULEUR: 'rgba(100, 120, 0)',
     OBSTACLE_COULEUR: 'rgba(0, 0, 0)',
     JOUEUR_COULEUR: 'blue',
+    ARME_MAX: 30,
+    ARME_MIN: 10,
 
     // Dimenssion du plateau pour le plateau Generateur (!!TOTAL = 100 !!)
     LARGEUR_PLATEAU: 10,

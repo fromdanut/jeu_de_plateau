@@ -37,31 +37,30 @@ Page.creerCelluleElt = function(cellule, position) {
 
     // S'il ne s'agit pas d'un joueur.
     if (!Joueur.isPrototypeOf(cellule)) {
-        // Vérifie si la cellule est accessible (pour la rendre rose).
+        // Vérifie si la cellule est accessible.
         if (cellule.getAccessible()) {
             // Floutte la cellule accessible pour la rendre visible au joueur.
             var celluleElt = this.floutter(celluleElt);
-            // Rendre le maitre du jeu accessible depuis l'element
-            celluleElt.maitreDuJeu = this.getControlleur().getMaitreDuJeu();
+            // S'il s'agit d'une arme on affiche sa valeur.
+            if (Arme.isPrototypeOf(cellule)) {
+                celluleElt.textContent = cellule.getDegat();
+            }
+            // Rendre le controlleur accessible depuis l'élément.
+            celluleElt.controlleur = this.getControlleur();
             celluleElt.addEventListener("click", function(e) {
                 var position = e.target.id;
-                e.target.maitreDuJeu.jouerTour(Number(position));
+                e.target.controlleur.jouerTour(Number(position));
             });
         }
     }
-    else {
 
-    }
     return celluleElt;
 }
 
-
 /**
   * Après les avoir supprimé, créer l'ensemble des cellules d'un plateau en
-  * utilisant la méthode creerCellule.
-  * Les cellules sont groupées par ligne (d'une longueur égale à la largeur du
-  * plateau.
-  * Enfin, rajoute les joueurs par dessus.
+  * utilisant la méthode creerCellule. Les cellules sont groupées par
+  * ligne (d'une longueur égale à la largeur du plateau).
   *
   * @param	 {Array}	plateau	    Le plateau du jeu.
   * @returns {void}

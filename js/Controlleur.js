@@ -1,9 +1,8 @@
 /**
   * Prototype chargé de controller les différents composants du programme.
-  * Il est rendu accessible dans l'ensemble des composant.
+  * Il est rendu accessible dans l'ensemble des composants.
   * Il a accès aux parametres.
   */
-
 
 var Controlleur = {
 
@@ -93,5 +92,16 @@ var Controlleur = {
       */
     lancerPartie: function() {
         this.getPage().dessinerPlateau(this.getPlateau());
+    },
+
+    /**
+      * La Page va demander au controlleur de jouer un tour lors d'un évènement.
+      * Le controlleur se contente de relayer la demande au maitre du jeu.
+      *
+      * @param   {Number} position Correspond à la position de la cellule clikée.
+      * @returns {Void}   Demande au maitre du jeu de faire le travail.
+      */
+    jouerTour: function(position) {
+        this.getMaitreDuJeu().jouerTour(position);
     }
 };

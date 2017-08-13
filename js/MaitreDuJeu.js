@@ -140,6 +140,13 @@ MaitreDuJeu.deplacer = function(joueur, position) {
         // Enlève le joueur de son ancienne position et le met sur sa nouvelle.
         var anciennePosition = joueur.getPosition();
         this.getPlateau()[position].push(this.getPlateau()[anciennePosition].pop());
+
+        // Echange l'arme du joueur avec la cellule s'il s'agit d'une cellule Arme.
+        if (Arme.isPrototypeOf(this.getPlateau()[position][0])) {
+            var armeTemp = this.getPlateau()[position][0];
+            this.getPlateau()[position][0] = joueur.getArme();
+            joueur.setArme(armeTemp);
+        }
         // Met à jour la position du joueur.
         joueur.setPosition(position);
     }
@@ -216,13 +223,12 @@ MaitreDuJeu.genererCelluleAccessible = function() {
     });
 
     // Trouver la position du joueur actif
-    var joueurActif = this.getJoueurActif();
-    var positionJoueur = joueurActif.getPosition();
+    var posJoueurActif = this.getJoueurActif().getPosition();
 
     // Parcours les quatres direction = nord, sud, est et ouest.
     var directions = ["n", "s", "e", "o"];
     for (var i = 0; i < directions.length; i++) {
-        this.explorer(directions[i], positionJoueur);
+        this.explorer(directions[i], posJoueurActif);
     }
 }
 
@@ -243,9 +249,102 @@ MaitreDuJeu.changerJoueurActif = function() {
 }
 
 /**
+* Vérifie si le joueur actif est collé à son advservaire.
+*
+* @returns	{Boolean}
+*/
+MaitreDuJeu.verifierCombat = function() {
+    var jActif = this.getJoueurActif();
+    // Positions adjacentes au joueur actif.
+    var posAdjJActif = this.trouverPositionAdjacente(jActif.getPosition());
+    // Pour chacune des 4 directions.
+    for (var i = 0; i < posAdjJActif.length; i++) {
+        // Pour chacune des posision adjacentes au joueur actif.
+        for (var j = 0; j < posAdjJActif[i].length; j++) {
+            // S'il y un joueur sur cette position adjacente.
+            if (this.getPlateau()[posAdjJActif[i][j]].length === 2) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * Trouve les positions adjacentes d'une position pour une portée (1, 3, etc.).
+ *
+ * @param   {Number} position  La position à partir de laquelle on cherche.
+ * @param   {Number} portee    La portée à la quelle on cherche.
+ * @returns {Array}            La liste des positions adjacentes [ [nord],
+                               [sud], [ouest], [est]].
+ */
+MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
+    var posAdj = [[], [], [], []], posTemp;
+    var largeurPlateau = this.getControlleur().getParametre().LARGEUR_PLATEAU;
+    // Stocke les limites du plateau en fonction de la position.
+    var limiteNord = 0;
+    var limiteSud = this.getControlleur().getParametre().NB_CELLULE - 1;
+    // Les limites ouest et est sont calculées par rapport à la position.
+    var posSplit = String(position).split('');
+    posSplit[posSplit.length - 1] = String(0);
+    var limiteOuest = posSplit.join('');
+    posSplit[posSplit.length - 1] = String(9);
+    var limiteEst = posSplit.join('');
+    // On cherche dans les 4 directions.
+    ['nord', 'sud', 'est', 'ouest'].forEach(function(direction) {
+        // Sur une longueur égale à la portée.
+        for (var i = 0; i < portee; i++) {
+            switch (direction) {
+                case 'nord': // Vers le nord.
+                    posTemp = position - ((i + 1) * largeurPlateau);
+                    console.log("nord");
+                    console.log(posTemp);
+                    if (posTemp >= limiteNord) {
+                        posAdj[0].push(posTemp);
+                    }
+                    break;
+                case 'sud': // Vers le sud.
+                    posTemp = position + ((i + 1) * largeurPlateau);
+                    console.log('sud');
+                    console.log(posTemp);
+                    if (posTemp <= limiteSud) {
+                        posAdj[1].push(posTemp);
+                    }
+                    break;
+                case 'ouest': // Vers le ouest.
+                    posTemp = position - (i + 1);
+                    console.log("ouest");
+                    console.log(posTemp);
+                    if (posTemp >= limiteOuest) {
+                        posAdj[2].push(posTemp);
+                    }
+                    break;
+                case 'est': // Vers l'est.
+                    posTemp = position + (i + 1);
+                    console.log("est");
+                    console.log(posTemp);
+                    if (posTemp <= limiteEst) {
+                        posAdj[3].push(posTemp);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
+    console.log(posAdj);
+    return posAdj;
+}
+
+MaitreDuJeu.lancerCombat = function() {
+    console.log('lancerCombat');
+}
+
+/**
   * Jouer un tour consiste à mettre en oeuvre la demande d'action du joueur
   * actif. Il comprend les étapes suivantes :
   *   - déplacer le joueur.
+  *   - vérifie si le joueur actif s'est collé à un advservaire.
   *   - incrémenter l'attribut tour.
   *   - changer le joueur actif.
   *   - générer les nouvelles cellules accessibles.
@@ -261,6 +360,11 @@ MaitreDuJeu.jouerTour = function(position) {
     }
     // Déplacer le joueur actif sur sa nouvelle position
     this.deplacer(this.getJoueurActif(), position);
+    // Vérifie si les deux joueurs sont cote à cote, si oui lance le combat.
+    var combat = this.verifierCombat();
+    if (combat) {
+        this.lancerCombat();
+    }
     // Incrémente l'attribut tour.
     var newTour = this.getTour() + 1
     this.setTour(newTour);

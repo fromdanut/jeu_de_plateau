@@ -60,23 +60,20 @@ Cellule.setAccessible = function(accessible=false) {
   */
 
 var Arme = Object.create(Cellule);
-Arme.init = function(controlleur, degat) {
+Arme.init = function(controlleur) {
     this.initCellule(controlleur);
     this.setCouleur(this.getControlleur().getParametre().ARME_COULEUR);
-    this.setDegat(degat);
+    this.setDegat();
 }
 
 Arme.getDegat = function() {
     return this.degat;
 }
 
-Arme.setDegat = function(degat=10){
-    if (typeof degat === 'number') {
-        this.degat = degat;
-    }
-    else {
-        console.log("Operation impossible car l'argument n'est pas un Number");
-    }
+Arme.setDegat = function(){
+    var max = this.getControlleur().getParametre().ARME_MAX;
+    var min = this.getControlleur().getParametre().ARME_MIN;
+    this.degat = Math.ceil(Math.random() * (max - min) + min);
 }
 
 /**
