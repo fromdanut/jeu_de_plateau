@@ -153,61 +153,6 @@ MaitreDuJeu.deplacer = function(joueur, position) {
 }
 
 /**
-  * Rend les cellules accessibles dans une direction par rapport à la
-  * position d'un joueur.
-  *
-  * @param	    {String}	direction	La direction  (nord, sud, est, ouest).
-  * @param	    {Number}	position	La position du joueur.
-  * @returns	{Void}
-  */
-MaitreDuJeu.explorer = function(direction, position) {
-    for (var i = 1; i < this.getControlleur().getParametre().DISTANCE_DEPLACEMENT + 1; i++) {
-        // Limites des positions.
-        var min = 0;
-        var max = this.getControlleur().getParametre().NB_CELLULE - 1;
-        var posSplit = String(position).split('');
-        // Redéfini min/max si besoin et calcule position cible pour chaque direction.
-        switch (direction) {
-            case "n":
-                var indice = position - (i * 10);
-                break;
-            case "s":
-                var indice = position + (i * 10);
-                break;
-            case "e":
-                // pos = 16 --> max = 19
-                posSplit[posSplit.length - 1] = String(9);
-                max = posSplit.join('');
-                var indice = position + i;
-                break;
-            case "o":
-                // pos = 16 --> min = 10
-                posSplit[posSplit.length - 1] = String(0);
-                min = posSplit.join('');
-                var indice = position - i;
-                break;
-            default:
-                console.log("Operation impossible : argument direction invalide.");
-        }
-
-
-        // Stop l'exploration si l'indice pointe en dehors du plateau...
-        if (indice > max || indice < min) {
-            break;
-        }
-
-        // ... ou sur un obstacle.
-        var cellule = this.getPlateau()[indice][0];
-        if (Obstacle.isPrototypeOf(cellule)) {
-            break;
-        }
-
-        // Rend la cellule accessible.
-        cellule.setAccessible(true);
-    }
-}
-
-/**
   * Met à innaccessible toutes les cellules vides puis recalcule les cellules
   * vides accessibles pour le joueur actif.
   *
@@ -222,13 +167,31 @@ MaitreDuJeu.genererCelluleAccessible = function() {
         }
     });
 
-    // Trouver la position du joueur actif
-    var posJoueurActif = this.getJoueurActif().getPosition();
+    // Trouve les positions adjacentes au joueur actif.
+    var posAdjJActif = this.trouverPositionAdjacente(
+        this.getJoueurActif().getPosition(),
+        this.getControlleur().getParametre().DISTANCE_DEPLACEMENT
+    );
 
-    // Parcours les quatres direction = nord, sud, est et ouest.
-    var directions = ["n", "s", "e", "o"];
-    for (var i = 0; i < directions.length; i++) {
-        this.explorer(directions[i], posJoueurActif);
+    // Vérifie le type de la cellule ...
+    // ...pour chaque direction...
+    var cellule;
+    for (var i = 0; i < 4; i++) {
+        // ...pour chaque position.
+        for (var j = 0; j < posAdjJActif[i].length; j++) {
+            // Stock la cellule correspondant à la position en cours.
+            cellule = this.getPlateau()[posAdjJActif[i][j]][0];
+            // Si la cellule correspondante sur le plateau n'est pas un obstacle.
+            if (!Obstacle.isPrototypeOf(cellule)) {
+                // Rend la cellule accessible.
+                cellule.setAccessible(true);
+            }
+            else {
+                // Arrete la boucle pour cette direction : l'obstacle empêche
+                // le joueur d'aller plus loin dans cette direction !
+                break;
+            }
+        }
     }
 }
 
@@ -272,6 +235,7 @@ MaitreDuJeu.verifierCombat = function() {
 
 /**
  * Trouve les positions adjacentes d'une position pour une portée (1, 3, etc.).
+ * Retourne une liste de 4 liste de position (nord, sud, ouest, est).
  *
  * @param   {Number} position  La position à partir de laquelle on cherche.
  * @param   {Number} portee    La portée à la quelle on cherche.
@@ -297,32 +261,24 @@ MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
             switch (direction) {
                 case 'nord': // Vers le nord.
                     posTemp = position - ((i + 1) * largeurPlateau);
-                    console.log("nord");
-                    console.log(posTemp);
                     if (posTemp >= limiteNord) {
                         posAdj[0].push(posTemp);
                     }
                     break;
                 case 'sud': // Vers le sud.
                     posTemp = position + ((i + 1) * largeurPlateau);
-                    console.log('sud');
-                    console.log(posTemp);
                     if (posTemp <= limiteSud) {
                         posAdj[1].push(posTemp);
                     }
                     break;
                 case 'ouest': // Vers le ouest.
                     posTemp = position - (i + 1);
-                    console.log("ouest");
-                    console.log(posTemp);
                     if (posTemp >= limiteOuest) {
                         posAdj[2].push(posTemp);
                     }
                     break;
                 case 'est': // Vers l'est.
                     posTemp = position + (i + 1);
-                    console.log("est");
-                    console.log(posTemp);
                     if (posTemp <= limiteEst) {
                         posAdj[3].push(posTemp);
                     }
@@ -332,7 +288,7 @@ MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
             }
         }
     });
-    console.log(posAdj);
+
     return posAdj;
 }
 
