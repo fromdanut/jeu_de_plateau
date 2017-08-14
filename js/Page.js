@@ -44,10 +44,23 @@ Page.creerCelluleElt = function(cellule, position) {
         celluleElt.classList.add("obstacle");
     }
     else if (Joueur.isPrototypeOf(cellule)) {
-        celluleElt.classList.add("joueur");
-        // Si c'est le joueur actif.
-        if (cellule === this.getControlleur().getMaitreDuJeu().getJoueurActif()) {
-            celluleElt.classList.add("actif");
+        // J1
+        if (cellule.getNom() === this.getControlleur().getParametre().NOM_J1) {
+            if (cellule.getActif()) {
+                celluleElt.classList.add("j1Actif");
+            }
+            else {
+                celluleElt.classList.add("j1");
+            }
+        }
+        // J2
+        else {
+            if (cellule.getActif()) {
+                celluleElt.classList.add("j2Actif");
+            }
+            else {
+                celluleElt.classList.add("j2");
+            }
         }
     }
     else {

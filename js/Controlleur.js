@@ -6,8 +6,8 @@
 
 var Controlleur = {
 
-    init: function() {
-        this.setParametre();
+    init: function(parametre) {
+        this.setParametre(parametre);
         this.setFabrique();
         this.setPlateau();
         this.setJoueurs();
@@ -15,9 +15,17 @@ var Controlleur = {
         this.setPage();
     },
 
-    setParametre: function() {
-        // Les parametres sont définis dans parametre.js (1er fichier sourcé).
+    setParametre: function(parametre) {
+        // Ajoute des constantes non parametrables.
+        parametre.NB_JOUEUR = 2;
+        parametre.NB_CELLULE = 100;
+        parametre.LARGEUR_PLATEAU = 10;
+        // Calcule et ajoute quelques constantes en fonction des paramètres.
+        parametre.NB_VIDE = parametre.NB_CELLULE - parametre.NB_ARME_FAIBLE -
+                                 parametre.NB_ARME_MOYEN - parametre.NB_ARME_FORT -
+                                 parametre.NB_OBSTACLE;
         this.parametre = parametre;
+        console.log("Fin controlleur.setParametre");
     },
 
     getParametre: function() {
@@ -43,6 +51,7 @@ var Controlleur = {
         var plateauGenerateur = this.getFabrique().creerPlateauGenerateur();
         this.plateau = plateauGenerateur.creerPlateau();
         console.log("Fin controlleur.setPlateauGenerateur");
+        console.log(this.getPlateau());
     },
 
     getPlateau: function() {
@@ -50,15 +59,17 @@ var Controlleur = {
     },
 
     setJoueurs: function() {
-        // Joueurs est un tableau de joueurs.
+        // Créé les deux joueurs.
         this.joueurs = [];
-        for (var i = 0; i < this.getParametre().NB_JOUEUR; i++) {
-            var joueur = this.getFabrique().creerJoueur()
-            this.joueurs.push(joueur);
-        }
         // Défini le premier joueur comme actif.
-        this.joueurs[0].setActif(true);
+        var j1 = this.getFabrique().creerJoueur(this.getParametre().NOM_J1);
+        j1.setActif(true);
+        this.joueurs.push(j1);
+        var j2 = this.getFabrique().creerJoueur(this.getParametre().NOM_J2);
+        this.joueurs.push(j2);
+
         console.log("Fin controlleur.setJoueurs");
+        console.log(this.getParametre());
     },
 
     getJoueurs: function() {

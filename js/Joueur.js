@@ -6,10 +6,11 @@
 
 var Joueur = Object.create(Composant);
 
-Joueur.init = function(controlleur, arme, actif=false) {
+Joueur.init = function(controlleur, arme, nom='Roger', actif=false) {
     this.initComposant(controlleur)
     this.setArme(arme);
     this.vie = 100;
+    this.setNom(nom);
     this.setActif(actif);
     this.setPosition();
 }
@@ -23,7 +24,20 @@ Joueur.setVie = function(vie) {
         this.vie = vie;
     }
     else {
-        console.log("Operation impossible car l'argument n'est pas un Number");
+        console.log("Operation impossible : argument vie invalide.");
+    }
+}
+
+Joueur.getNom = function() {
+    return this.nom;
+}
+
+Joueur.setNom = function(nom) {
+    if (typeof nom === 'string') {
+        this.nom = nom;
+    }
+    else {
+        console.log("Operation impossible : argument nom invalide.");
     }
 }
 
@@ -36,7 +50,7 @@ Joueur.setActif = function(actif) {
         this.actif = actif;
     }
     else {
-        console.log("Operation impossible car l'argument n'est pas un Number");
+        console.log("Operation impossible : argument actif invalide.");
     }
 }
 

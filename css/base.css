@@ -31,7 +31,6 @@ h1 {
 
 .armeMinimum.accessible {
     background-image: url(../img/arme_minimum_accessible.png);
-    font-size: 100%;
 }
 .armeFaible {
     background-image: url(../img/arme_faible.png);
@@ -39,7 +38,6 @@ h1 {
 
 .armeFaible.accessible {
     background-image: url(../img/arme_faible_accessible.png);
-    font-size: 100%;
 }
 .armeMoyen {
     background-image: url(../img/arme_moyen.png);
@@ -47,27 +45,33 @@ h1 {
 
 .armeMoyen.accessible {
     background-image: url(../img/arme_moyen_accessible.png);
-    font-size: 100%;
 }
 .armeFort {
-    background-image: url(../img/arme_forte.png);
+    background-image: url(../img/arme_fort.png);
 }
 
 .armeFort.accessible {
-    background-image: url(../img/arme_forte_accessible.png);
-    font-size: 100%;
+    background-image: url(../img/arme_fort_accessible.png);
 }
 
 .obstacle {
     background-image: url(../img/obstacle.png);
 }
 
-.joueur {
-    background-image: url(../img/joueur.png);
+.j1 {
+    background-image: url(../img/j1.png);
 }
 
-.joueur.actif {
-    background-image: url(../img/joueur_actif.png);
+.j1Actif {
+    background-image: url(../img/j1_actif.png);
+}
+
+.j2 {
+    background-image: url(../img/j2.png);
+}
+
+.j2Actif {
+    background-image: url(../img/j2_actif.png);
 }
 
 .vide {

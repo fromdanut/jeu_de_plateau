@@ -45,10 +45,10 @@ Fabrique.creerCellule = function(type, options=[]) {
   *
   * @returns	{Joueur}    Le joueur.
   */
-Fabrique.creerJoueur = function() {
+Fabrique.creerJoueur = function(nom="jean") {
     var arme = this.creerCellule("arme");
     var joueur = Object.create(Joueur);
-    joueur.init(this.getControlleur(), arme);
+    joueur.init(this.getControlleur(), arme, nom);
     return joueur;
 }
 

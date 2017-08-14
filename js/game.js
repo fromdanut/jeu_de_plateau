@@ -1,7 +1,7 @@
 var controlleur = Object.create(Controlleur);
-controlleur.init();
+controlleur.init(parametre);
 
 console.log("Fin initialisation du controleur, controleur :");
 console.log(controlleur);
 
-controlleur.getPage().dessinerPlateau(controlleur.getPlateau());
+controlleur.lancerPartie();
