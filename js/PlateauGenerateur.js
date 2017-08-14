@@ -33,36 +33,50 @@ PlateauGenerateur.melanger = function(tableau) {
 /**
   * Ajoute un nombre de cellule au plateau.
   *
-  * @param   {Number}  nbCellule      Nombre de cellule.
-  * @param   {Cellule} typeCellule    Le type de cellule (arme, obstacle, etc.).
-  * @param   {Array}   plateau        Le plateau.
+  * @param   {Number}  nb              Nombre de cellule.
+  * @param   {Cellule} type     Le type de cellule (arme, obstacle, etc.).
+  * @param   {Array}   plateau         Le plateau.
+  * @param   {Array}   options         Les options.
   * @returns {Void}
 */
-PlateauGenerateur.ajouter = function(nbCellule, typeCellule, plateau) {
-    for (var i = 0; i < nbCellule; i++) {
-        //console.log("début PlateauGenerateur.ajouter()");
-        var cellule = this.getControlleur().getFabrique().creerCellule(typeCellule);
-        //console.log("fin PlateauGenerateur.ajouter(), iter : " + String(i));
-        // Les cellule sont englobées dans un tableau (afin de pouvoir y ajouter les joueurs)
+PlateauGenerateur.ajouterCellule = function(nb, type, plateau, options) {
+    for (var i = 0; i < nb; i++) {
+        var cellule = this.getControlleur().getFabrique().creerCellule(type, options);
+        // Les cellules sont englobées dans un tableau (afin de pouvoir y ajouter les joueurs)
         plateau.push([cellule]);
     }
 }
 
-
 /**
   * Créé une plateau sur laquelle sont placées les cellules.
   *
-  * @param   {Number}  nbCellule      Nombre de cellule.
-  * @param   {Cellule} typeCellule    Le type de cellule (arme, obstacle, etc.).
   * @returns {Array}                  Le plateau avec cellules.
   */
 PlateauGenerateur.creerPlateau = function() {
     var plateau = [];
+    // Ajoute l'ensemble des cases (vide, obstacles et différentes armes.)
+    this.ajouterCellule(this.getControlleur().getParametre().NB_VIDE, "vide", plateau);
+    this.ajouterCellule(this.getControlleur().getParametre().NB_OBSTACLE, "obstacle", plateau);
+    this.ajouterCellule(
+        this.getControlleur().getParametre().NB_ARME_FAIBLE,
+        type="arme",
+        plateau,
+        options=['faible',]
+    );
+    this.ajouterCellule(
+        this.getControlleur().getParametre().NB_ARME_MOYEN,
+        type="arme",
+        plateau,
+        options=['moyen',]
+    );
+    this.ajouterCellule(
+        this.getControlleur().getParametre().NB_ARME_FORT,
+        type="arme",
+        plateau,
+        options=['fort',]
+    );
 
-    this.ajouter(this.getControlleur().getParametre().NB_VIDE, "vide", plateau);
-    this.ajouter(this.getControlleur().getParametre().NB_OBSTACLE, "obstacle", plateau);
-    this.ajouter(this.getControlleur().getParametre().NB_ARME, "arme", plateau);
-
+    // Mélange le plateau.
     this.melanger(plateau);
     return plateau;
 }

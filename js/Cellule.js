@@ -7,32 +7,11 @@ var Cellule = Object.create(Composant);
 
 Cellule.initCellule = function(controlleur) {
     this.initComposant(controlleur);
-    this.setCouleur(this.getControlleur().getParametre().CELLULE_COULEUR);
     this.setAccessible();
 }
 
 Cellule.init = function(controlleur) {
     this.initCellule(controlleur);
-}
-
-Cellule.getCouleur = function() {
-    return this.couleur;
-}
-
-/**
-  * Affecte une couleur à la cellule.
-  *
-  * @param      {String}   couleur    La couleur de la cellule.
-  * @returns	{Void}
-  */
-Cellule.setCouleur = function(couleur){
-    // Ajouter ici un vérificateur d'couleur.
-    if (typeof couleur === 'string') {
-        this.couleur = couleur;
-    }
-    else {
-        console.log("Operation impossible car l'argument couleur n'est pas une String");
-    }
 }
 
 Cellule.getAccessible = function() {
@@ -60,20 +39,33 @@ Cellule.setAccessible = function(accessible=false) {
   */
 
 var Arme = Object.create(Cellule);
-Arme.init = function(controlleur) {
+Arme.init = function(controlleur, degat="minimum") {
     this.initCellule(controlleur);
-    this.setCouleur(this.getControlleur().getParametre().ARME_COULEUR);
-    this.setDegat();
+    this.setDegat(degat);
 }
 
 Arme.getDegat = function() {
     return this.degat;
 }
 
-Arme.setDegat = function(){
-    var max = this.getControlleur().getParametre().ARME_MAX;
-    var min = this.getControlleur().getParametre().ARME_MIN;
-    this.degat = Math.ceil(Math.random() * (max - min) + min);
+Arme.setDegat = function(degat){
+    switch (degat) {
+        case "minimum":
+            this.degat = this.getControlleur().getParametre().ARME_DEGAT_MINIMUM;
+            break;
+        case "faible":
+            this.degat = this.getControlleur().getParametre().ARME_DEGAT_FAIBLE;
+            break;
+        case "moyen":
+            this.degat = this.getControlleur().getParametre().ARME_DEGAT_MOYEN;
+            break;
+        case "fort":
+            this.degat = this.getControlleur().getParametre().ARME_DEGAT_FORT;
+            break;
+        default:
+            console.log("Operation impossible : argument degat invalide.");
+            break;
+    }
 }
 
 /**
@@ -84,7 +76,6 @@ var Obstacle = Object.create(Cellule);
 
 Obstacle.init = function(controlleur) {
     this.initCellule(controlleur);
-    this.setCouleur(this.getControlleur().getParametre().OBSTACLE_COULEUR);
 }
 
 Obstacle.setAccessible = function(accessible) {

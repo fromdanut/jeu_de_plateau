@@ -6,16 +6,21 @@
 var Fabrique = Object.create(Composant);
 
 /**
-  * Créer une cellule du type demandé.
+  * Créer une cellule du type demandé, avec les dégâts à moyen par
+  * défaut pour les armes.
   *
-  * @param	    {String}	type	Le type de cellule  (arme, obstacle, ...).
-  * @returns	{Cellule}           La cellule.
+  * @param	    {String}	type	    Le type de cellule  (arme, obstacle, ...).
+  * @param	    {Array}	    options	    Liste des options de la cellule.
+  * @returns	{Cellule}               La cellule.
   */
-Fabrique.creerCellule = function(type) {
+Fabrique.creerCellule = function(type, options=[]) {
     switch (type) {
         case "arme":
             var arme = Object.create(Arme);
-            arme.init(this.getControlleur());
+            if (options.length > 0) {
+                var degat = options[0];
+            }
+            arme.init(this.getControlleur(), degat);
             return arme;
             break;
         case "obstacle":

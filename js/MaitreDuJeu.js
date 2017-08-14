@@ -90,13 +90,20 @@ MaitreDuJeu.placerJoueurs = function(){
     // Stock le nombre de cellule dans une variable 'nbCellule'.
     var nbCellule = this.getControlleur().getParametre().NB_CELLULE;
     this.joueurs.forEach(function(joueur) {
-        // Obtenir une position aléatoire sur le plateau.
-        var position = Math.floor(Math.random() * nbCellule);
-        // S'il n'y a que la cellule sur à cette position (et pas l'autre joueur)
-        if (this.plateau[position].length === 1) {
-            this.plateau[position].push(joueur);
-            // Met à jour la position du joueur.
-            joueur.setPosition(position);
+        while (true) {
+            // Obtenir une position aléatoire sur le plateau.
+            var position = Math.floor(Math.random() * nbCellule);
+            // Si ca correspond à une cellule sans joueur dessus...
+            if (this.plateau[position].length === 1) {
+                // ... et vide.
+                if (!Arme.isPrototypeOf(this.plateau[position][0]) &&
+                    !Obstacle.isPrototypeOf(this.plateau[position][0])) {
+                        this.plateau[position].push(joueur);
+                        // Met à jour la position du joueur.
+                        joueur.setPosition(position);
+                        break;
+                }
+            }
         }
     });
 }
@@ -134,7 +141,7 @@ MaitreDuJeu.deplacer = function(joueur, position) {
     }
     // Vérifie que la position est dans les limites du plateau.
     if (position < 0 || position > this.getControlleur().getParametre().NB_CELLULE) {
-        console.log("Operation impossible : position hors de la plateau.");
+        console.log("Operation impossible : position hors du plateau.");
     }
     else {
         // Enlève le joueur de son ancienne position et le met sur sa nouvelle.
@@ -181,15 +188,19 @@ MaitreDuJeu.genererCelluleAccessible = function() {
         for (var j = 0; j < posAdjJActif[i].length; j++) {
             // Stock la cellule correspondant à la position en cours.
             cellule = this.getPlateau()[posAdjJActif[i][j]][0];
-            // Si la cellule correspondante sur le plateau n'est pas un obstacle.
-            if (!Obstacle.isPrototypeOf(cellule)) {
-                // Rend la cellule accessible.
-                cellule.setAccessible(true);
-            }
-            else {
+            // Si la cellule correspondante sur le plateau est un obstacle.
+            if (Obstacle.isPrototypeOf(cellule)) {
                 // Arrete la boucle pour cette direction : l'obstacle empêche
                 // le joueur d'aller plus loin dans cette direction !
                 break;
+            }
+            // De meme s'il y a un joueur sur cette cellule.
+            else if (this.getPlateau()[posAdjJActif[i][j]].length === 2) {
+                break;
+            }
+            else {
+                // Rend la cellule accessible.
+                cellule.setAccessible(true);
             }
         }
     }
@@ -292,6 +303,14 @@ MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
     return posAdj;
 }
 
+/**
+  * Lance un combat entre 2 joueurs avec a attaquant et un défenseur.
+  * C'est l'attaquant qui commence le combat.
+  *
+  * @param	    {Joueur}	attaquant	L'attaquant, 1er à frapper.
+  * @param	    {Joueur}	défenseur	Le défenseur.
+  * @returns	{Void}
+  */
 MaitreDuJeu.lancerCombat = function() {
     console.log('lancerCombat');
 }

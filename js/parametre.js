@@ -10,17 +10,17 @@ var parametre = {
     DISTANCE_DEPLACEMENT: 3,
 
     // Pour la création des cellules.
-    CELLULE_COULEUR: 'rgba(120, 120, 120)',
-    ARME_COULEUR: 'rgba(100, 120, 0)',
-    OBSTACLE_COULEUR: 'rgba(0, 0, 0)',
-    JOUEUR_COULEUR: 'blue',
-    ARME_MAX: 30,
-    ARME_MIN: 10,
+    ARME_DEGAT_MINIMUM: 10,
+    ARME_DEGAT_FAIBLE: 15,
+    ARME_DEGAT_MOYEN: 20,
+    ARME_DEGAT_FORT: 25,
 
     // Dimenssion du plateau pour le plateau Generateur (!!TOTAL = 100 !!)
     LARGEUR_PLATEAU: 10,
     NB_CELLULE: 100,
-    NB_ARME: 3,
+    NB_ARME_FAIBLE: 2,
+    NB_ARME_MOYEN: 1,
+    NB_ARME_FORT: 1,
     NB_OBSTACLE: 12,
     NB_VIDE: 85
 };

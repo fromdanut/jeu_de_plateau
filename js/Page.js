@@ -4,48 +4,62 @@
 
 var Page = Object.create(Composant);
 
-/**
-  * Floutter un élément cellule accessible.
-  *
-  * @param	    {Element}	celluleElt	L'élément cellule.
-  * @returns	{Element}		    	L'élément cellule floutté.
-  */
-Page.floutter = function(celluleElt) {
-    // Rend la couleur du fond transparente.
-    var couleur = celluleElt.style.backgroundColor;
-    var nouvelleCouleur = couleur.slice(0, -1) + ', 0.4)';
-    celluleElt.style.backgroundColor = nouvelleCouleur;
-    // Modifie les bordures.
-    celluleElt.style.border = 'solid white 1px';
-    return celluleElt;
-}
 
 /**
   * Créer un élément à partir d'une cellule d'un plateau.
   *
   * @param	 {Cellule}	cellule	    La cellule modèle pour l'élément.
-  * @param	 {Number}	position    La couleur sous forme 'rga(xxx,xxx,xxx)'.
+  * @param	 {Number}	position    La position.
   * @returns {Element}              L'élément cellule.
   */
 Page.creerCelluleElt = function(cellule, position) {
-    // Créé le conteneur
+    // Créé l'élément.
     var celluleElt = document.createElement("td");
     celluleElt.classList.add("cellule");
-    celluleElt.style.backgroundColor = cellule.getCouleur();
     // Ajoute l'id avec la position ("xy").
     celluleElt.id = position;
+
+    // Ajoute la classe correspondant à la cellule.
+    if (Arme.isPrototypeOf(cellule)) {
+        // Attribut une classe particulière en fonction des dégâts de l'arme.
+        switch (cellule.getDegat()) {
+            case this.getControlleur().getParametre().ARME_DEGAT_MINIMUM:
+                celluleElt.classList.add("armeMinimum");
+                break;
+            case this.getControlleur().getParametre().ARME_DEGAT_FAIBLE:
+                celluleElt.classList.add("armeFaible");
+                break;
+            case this.getControlleur().getParametre().ARME_DEGAT_MOYEN:
+                celluleElt.classList.add("armeMoyen");
+                break;
+            case this.getControlleur().getParametre().ARME_DEGAT_FORT:
+                celluleElt.classList.add("armeFort");
+                break;
+            default:
+                console.log("Operation impossible : argument cellule invalide.");
+        }
+        celluleElt.classList.add("arme");
+    }
+    else if (Obstacle.isPrototypeOf(cellule)) {
+        celluleElt.classList.add("obstacle");
+    }
+    else if (Joueur.isPrototypeOf(cellule)) {
+        celluleElt.classList.add("joueur");
+        // Si c'est le joueur actif.
+        if (cellule === this.getControlleur().getMaitreDuJeu().getJoueurActif()) {
+            celluleElt.classList.add("actif");
+        }
+    }
+    else {
+        celluleElt.classList.add("vide");
+    }
 
     // S'il ne s'agit pas d'un joueur.
     if (!Joueur.isPrototypeOf(cellule)) {
         // Vérifie si la cellule est accessible.
         if (cellule.getAccessible()) {
-            // Floutte la cellule accessible pour la rendre visible au joueur.
-            var celluleElt = this.floutter(celluleElt);
-            // S'il s'agit d'une arme on affiche sa valeur.
-            if (Arme.isPrototypeOf(cellule)) {
-                celluleElt.textContent = cellule.getDegat();
-            }
-            // Rendre le controlleur accessible depuis l'élément.
+            celluleElt.classList.add("accessible");
+            // Rend le controlleur accessible depuis l'élément.
             celluleElt.controlleur = this.getControlleur();
             celluleElt.addEventListener("click", function(e) {
                 var position = e.target.id;

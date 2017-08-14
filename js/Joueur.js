@@ -8,26 +8,11 @@ var Joueur = Object.create(Composant);
 
 Joueur.init = function(controlleur, arme, actif=false) {
     this.initComposant(controlleur)
-    this.setCouleur(this.getControlleur().getParametre().JOUEUR_COULEUR);
     this.setArme(arme);
     this.vie = 100;
     this.setActif(actif);
     this.setPosition();
 }
-
-Joueur.getCouleur = function() {
-    return this.couleur;
-}
-
-Joueur.setCouleur = function(couleur){
-    // Ajouter ici un vérificateur d'couleur.
-    if (typeof couleur === 'string') {
-        this.couleur = couleur;
-    }
-    else {
-        console.log("Operation impossible car l'argument couleur n'est pas une String");
-    }
-},
 
 Joueur.getVie = function() {
     return this.vie;
