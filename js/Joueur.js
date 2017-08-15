@@ -6,13 +6,19 @@
 
 var Joueur = Object.create(Composant);
 
-Joueur.init = function(controlleur, arme, nom='Roger', actif=false) {
+Joueur.init = function(controlleur, arme, param, actif=false) {
     this.initComposant(controlleur)
     this.setArme(arme);
     this.vie = 100;
-    this.setNom(nom);
+    this.setParam(param);
     this.setActif(actif);
     this.setPosition();
+}
+
+Joueur.setParam = function(param) {
+    this.nom = param.nom;
+    this.img = param.img;
+    this.imgActif = param.imgActif;
 }
 
 Joueur.getVie = function() {
@@ -32,14 +38,6 @@ Joueur.getNom = function() {
     return this.nom;
 }
 
-Joueur.setNom = function(nom) {
-    if (typeof nom === 'string') {
-        this.nom = nom;
-    }
-    else {
-        console.log("Operation impossible : argument nom invalide.");
-    }
-}
 
 Joueur.getActif = function() {
     return this.actif;
@@ -69,6 +67,20 @@ Joueur.setArme = function(arme){
 
 Joueur.getPosition = function() {
     return this.position;
+}
+
+/**
+  * Retourne la référence vers l'image à utiliser pour représenter le joueur,
+  * sous la forme "url(xxx)", pour l'attribut css background-image.
+  */
+Joueur.getImg = function(param) {
+    if (this.getActif()) {
+        var img = "url(" + this.imgActif + ")";
+    }
+    else {
+        var img = "url(" + this.img + ")";
+    }
+    return img;
 }
 
 /**

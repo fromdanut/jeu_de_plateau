@@ -6,34 +6,36 @@
 var Fabrique = Object.create(Composant);
 
 /**
-  * Créer une cellule du type demandé, avec les dégâts à moyen par
-  * défaut pour les armes.
+  * Créer une cellule du type demandé, avec les param.
   *
   * @param	    {String}	type	    Le type de cellule  (arme, obstacle, ...).
-  * @param	    {Array}	    options	    Liste des options de la cellule.
+  * @param	    {Object}	param	    Contient les parametres de la cellule.
   * @returns	{Cellule}               La cellule.
   */
-Fabrique.creerCellule = function(type, options=[]) {
+Fabrique.creerCellule = function(type, param) {
     switch (type) {
         case "arme":
             var arme = Object.create(Arme);
-            if (options.length > 0) {
-                var degat = options[0];
-            }
-            arme.init(this.getControlleur(), degat);
+            arme.init(this.getControlleur(), param);
             return arme;
             break;
         case "obstacle":
             var obstacle = Object.create(Obstacle);
-            obstacle.init(this.getControlleur());
+            obstacle.init(this.getControlleur(), param);
             return obstacle;
+            break;
+        case "porte":
+            var porte = Object.create(Porte);
+            porte.init(this.getControlleur(), param);
+            return porte;
             break;
         case "vide":
             // Correspond à une Cellule vide (ni arme ni obstacle).
-            var cellule = Object.create(Cellule);
-            cellule.init(this.getControlleur());
+            var cellule = Object.create(Vide);
+            cellule.init(this.getControlleur(), param);
             return cellule;
             break;
+
         default:
             console.log("Operation impossible: argument type invalide.");
             return false;
@@ -45,10 +47,13 @@ Fabrique.creerCellule = function(type, options=[]) {
   *
   * @returns	{Joueur}    Le joueur.
   */
-Fabrique.creerJoueur = function(nom="jean") {
-    var arme = this.creerCellule("arme");
+Fabrique.creerJoueur = function(param) {
+    var arme = this.creerCellule(
+        "arme",
+        this.getControlleur().getParametre().ARME.minimum
+    );
     var joueur = Object.create(Joueur);
-    joueur.init(this.getControlleur(), arme, nom);
+    joueur.init(this.getControlleur(), arme, param);
     return joueur;
 }
 

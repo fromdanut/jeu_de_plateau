@@ -19,65 +19,30 @@ Page.creerCelluleElt = function(cellule, position) {
     // Ajoute l'id avec la position ("xy").
     celluleElt.id = position;
 
-    // Ajoute la classe correspondant à la cellule.
-    if (Arme.isPrototypeOf(cellule)) {
-        // Attribut une classe particulière en fonction des dégâts de l'arme.
-        switch (cellule.getDegat()) {
-            case this.getControlleur().getParametre().ARME_DEGAT_MINIMUM:
-                celluleElt.classList.add("armeMinimum");
-                break;
-            case this.getControlleur().getParametre().ARME_DEGAT_FAIBLE:
-                celluleElt.classList.add("armeFaible");
-                break;
-            case this.getControlleur().getParametre().ARME_DEGAT_MOYEN:
-                celluleElt.classList.add("armeMoyen");
-                break;
-            case this.getControlleur().getParametre().ARME_DEGAT_FORT:
-                celluleElt.classList.add("armeFort");
-                break;
-            default:
-                console.log("Operation impossible : argument cellule invalide.");
-        }
-        celluleElt.classList.add("arme");
-    }
-    else if (Obstacle.isPrototypeOf(cellule)) {
-        celluleElt.classList.add("obstacle");
-    }
-    else if (Joueur.isPrototypeOf(cellule)) {
-        // J1
-        if (cellule.getNom() === this.getControlleur().getParametre().NOM_J1) {
-            if (cellule.getActif()) {
-                celluleElt.classList.add("j1Actif");
-            }
-            else {
-                celluleElt.classList.add("j1");
-            }
-        }
-        // J2
-        else {
-            if (cellule.getActif()) {
-                celluleElt.classList.add("j2Actif");
-            }
-            else {
-                celluleElt.classList.add("j2");
-            }
-        }
-    }
-    else {
-        celluleElt.classList.add("vide");
-    }
+    // Ajoute l'image correspondant à la cellule.
+    celluleElt.style.backgroundImage = cellule.getImg();
 
     // S'il ne s'agit pas d'un joueur.
     if (!Joueur.isPrototypeOf(cellule)) {
+        // Rend le controlleur accessible depuis l'élément.
+        celluleElt.controlleur = this.getControlleur();
         // Vérifie si la cellule est accessible.
         if (cellule.getAccessible()) {
-            celluleElt.classList.add("accessible");
-            // Rend le controlleur accessible depuis l'élément.
-            celluleElt.controlleur = this.getControlleur();
-            celluleElt.addEventListener("click", function(e) {
-                var position = e.target.id;
-                e.target.controlleur.jouerTour(Number(position));
-            });
+            // Si c'est une porte...
+            if (Porte.isPrototypeOf(cellule)) {
+                celluleElt.addEventListener("click", function(e) {
+                    e.target.controlleur.realiserAction("jouerPorte");
+                });
+            }
+            // C'est donc une cellule vide ou une arme.
+            else {
+                celluleElt.addEventListener("click", function(e) {
+                    var position = e.target.id;
+                    e.target.controlleur.realiserAction(
+                        "jouerDeplacement",
+                        Number(position));
+                    });
+            }
         }
     }
 

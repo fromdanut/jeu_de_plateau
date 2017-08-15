@@ -8,19 +8,61 @@ var parametre = {
     // Parametre globaux, concerne surtout le controlleur.
     DISTANCE_DEPLACEMENT: 3,
 
-    // Noms des joueurs
-    NOM_J1: "Roger",
-    NOM_J2: "Regor",
+    // Param pour la création des joueurs.
+    J1: {
+        nom: "Roger",
+        img: "../img/j1.png",
+        imgActif: "../img/j1_actif.png",
+    },
+    J2: {
+        nom: "Regor",
+        img: "../img/j2.png",
+        imgActif: "../img/j2_actif.png",
+    },
 
-    // Pour la création des cellules.
-    ARME_DEGAT_MINIMUM: 10,
-    ARME_DEGAT_FAIBLE: 15,
-    ARME_DEGAT_MOYEN: 20,
-    ARME_DEGAT_FORT: 25,
+    // Param pour la création des cellules.
+    ARME: {
+        minimum: {
+            degat: 10,
+            img: "../img/arme_minimum.png",
+            imgAccessible: "../img/arme_minimum_accessible.png",
+        },
+        faible: {
+            degat: 15,
+            img: "../img/arme_faible.png",
+            imgAccessible: "../img/arme_faible_accessible.png",
+        },
+        moyen: {
+            degat: 20,
+            img: "../img/arme_moyen.png",
+            imgAccessible: "../img/arme_moyen_accessible.png",
+        },
+        fort: {
+            degat: 25,
+            img: "../img/arme_fort.png",
+            imgAccessible: "../img/arme_fort_accessible.png",
+        },
+    },
+
+    OBSTACLE: {
+        img: "../img/obstacle.png",
+        imgAccessible: "../img/obstacle.png",
+    },
+
+    PORTE: {
+        img: "../img/porte.png",
+        imgAccessible: "../img/porte_accessible.png",
+    },
+
+    VIDE: {
+        img: "../img/vide.png",
+        imgAccessible: "../img/vide_accessible.png",
+    },
 
     // Dimenssion du plateau pour le plateau Generateur
     NB_ARME_FAIBLE: 2,
     NB_ARME_MOYEN: 1,
     NB_ARME_FORT: 1,
-    NB_OBSTACLE: 12,
+    NB_OBSTACLE: 10,
+    NB_PORTE: 1,
 };

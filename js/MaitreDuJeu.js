@@ -82,30 +82,38 @@ MaitreDuJeu.setPlateau = function(plateau) {
 }
 
 /**
-  * Place les joueurs au hasard sur le plateau, utilisé dans la méthode init.
+  * Place un joueur au hasard.
+  *
+  * @param      {Joueur}    joueur  Un des deux joueurs.
+  * @returns    {Void}
+  */
+MaitreDuJeu.placerAuHasard = function(joueur) {
+    // Stock le nombre de cellule dans une variable 'nbCellule'.
+    var nbCellule = this.getControlleur().getParametre().NB_CELLULE;
+    while (true) {
+        // Obtenir une position aléatoire sur le plateau.
+        var position = Math.floor(Math.random() * nbCellule);
+        // Si ca correspond à une cellule sans joueur dessus...
+        if (this.plateau[position].length === 1) {
+            // ... et vide (ni arme, ni obstacle).
+            if (Vide.isPrototypeOf(this.plateau[position][0])) {
+                    this.plateau[position].push(joueur);
+                    // Met à jour la position du joueur.
+                    joueur.setPosition(position);
+                    break;
+            }
+        }
+    }
+}
+/**
+  * Place les deux joueurs au hasard sur le plateau, utilisé dans la méthode init.
   *
   * @returns    {Void}
   */
 MaitreDuJeu.placerJoueurs = function(){
-    // Stock le nombre de cellule dans une variable 'nbCellule'.
-    var nbCellule = this.getControlleur().getParametre().NB_CELLULE;
-    this.joueurs.forEach(function(joueur) {
-        while (true) {
-            // Obtenir une position aléatoire sur le plateau.
-            var position = Math.floor(Math.random() * nbCellule);
-            // Si ca correspond à une cellule sans joueur dessus...
-            if (this.plateau[position].length === 1) {
-                // ... et vide.
-                if (!Arme.isPrototypeOf(this.plateau[position][0]) &&
-                    !Obstacle.isPrototypeOf(this.plateau[position][0])) {
-                        this.plateau[position].push(joueur);
-                        // Met à jour la position du joueur.
-                        joueur.setPosition(position);
-                        break;
-                }
-            }
-        }
-    });
+    for (var i = 0; i < this.getJoueurs().length; i++) {
+        this.placerAuHasard(this.getJoueurs()[i]);
+    }
 }
 
 /**
@@ -316,8 +324,21 @@ MaitreDuJeu.lancerCombat = function() {
 }
 
 /**
-  * Jouer un tour consiste à mettre en oeuvre la demande d'action du joueur
-  * actif. Il comprend les étapes suivantes :
+  * Jouer porte consiste à repositioner le joueur actif sur une cellule au hasard.
+  * Lance this.jouer (commun à toutes les actions).
+  * @returns	{Void}
+  */
+MaitreDuJeu.jouerPorte = function() {
+    jActif = this.getJoueurActif();
+    // Enlève le joueur actif de sa place actuelle.
+    this.getPlateau()[jActif.getPosition()].pop();
+    this.placerAuHasard(jActif);
+    this.jouer();
+}
+
+/**
+  * Jouer un déplacement consiste à déplacer le joueur actif sur la position demandée.
+  * Lance this.jouer (commun à toutes les actions).
   *   - déplacer le joueur.
   *   - vérifie si le joueur actif s'est collé à un advservaire.
   *   - incrémenter l'attribut tour.
@@ -328,13 +349,29 @@ MaitreDuJeu.lancerCombat = function() {
   * @param	    {Number}	position	La position du joueur.
   * @returns	{Void}
   */
-MaitreDuJeu.jouerTour = function(position) {
-    if (typeof position ==! 'number') {
-        console.log("Operation impossible : argument position invalide.");
-        return false;
-    }
-    // Déplacer le joueur actif sur sa nouvelle position
-    this.deplacer(this.getJoueurActif(), position);
+MaitreDuJeu.jouerDeplacement = function(position) {
+  if (typeof position ==! 'number') {
+      console.log("Operation impossible : argument position invalide.");
+      return false;
+  }
+  // Déplacer le joueur actif sur sa nouvelle position
+  this.deplacer(this.getJoueurActif(), position);
+  this.jouer();
+}
+
+/**
+  * Jouer consiste à mettre en oeuvre une routine commune à toutes les actions:
+  *   - vérifie si le joueur actif s'est collé à un adversaire.
+  *   - incrémenter l'attribut tour.
+  *   - changer le joueur actif.
+  *   - générer les nouvelles cellules accessibles.
+  *   - enfin demander au page générateur de déssiner le nouveau plateau.
+  *
+  * @param	    {Number}	position	La position du joueur.
+  * @returns	{Void}
+  */
+MaitreDuJeu.jouer = function(position) {
+
     // Vérifie si les deux joueurs sont cote à cote, si oui lance le combat.
     var combat = this.verifierCombat();
     if (combat) {

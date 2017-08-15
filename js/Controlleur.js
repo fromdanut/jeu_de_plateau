@@ -23,7 +23,7 @@ var Controlleur = {
         // Calcule et ajoute quelques constantes en fonction des paramètres.
         parametre.NB_VIDE = parametre.NB_CELLULE - parametre.NB_ARME_FAIBLE -
                                  parametre.NB_ARME_MOYEN - parametre.NB_ARME_FORT -
-                                 parametre.NB_OBSTACLE;
+                                 parametre.NB_OBSTACLE - parametre.NB_PORTE;
         this.parametre = parametre;
         console.log("Fin controlleur.setParametre");
     },
@@ -50,7 +50,7 @@ var Controlleur = {
         // On utilise le générateur de plateau pour fabriquer le plateau.
         var plateauGenerateur = this.getFabrique().creerPlateauGenerateur();
         this.plateau = plateauGenerateur.creerPlateau();
-        console.log("Fin controlleur.setPlateauGenerateur");
+        console.log("Fin controlleur.setPlateau");
         console.log(this.getPlateau());
     },
 
@@ -62,10 +62,10 @@ var Controlleur = {
         // Créé les deux joueurs.
         this.joueurs = [];
         // Défini le premier joueur comme actif.
-        var j1 = this.getFabrique().creerJoueur(this.getParametre().NOM_J1);
+        var j1 = this.getFabrique().creerJoueur(param=this.getParametre().J1);
         j1.setActif(true);
         this.joueurs.push(j1);
-        var j2 = this.getFabrique().creerJoueur(this.getParametre().NOM_J2);
+        var j2 = this.getFabrique().creerJoueur(param=this.getParametre().J2);
         this.joueurs.push(j2);
 
         console.log("Fin controlleur.setJoueurs");
@@ -109,10 +109,20 @@ var Controlleur = {
       * La Page va demander au controlleur de jouer un tour lors d'un évènement.
       * Le controlleur se contente de relayer la demande au maitre du jeu.
       *
+      * @param   {String} type     Le type correspond a une méthode du Maitre du Jeu.
       * @param   {Number} position Correspond à la position de la cellule clikée.
       * @returns {Void}   Demande au maitre du jeu de faire le travail.
       */
-    jouerTour: function(position) {
-        this.getMaitreDuJeu().jouerTour(position);
+    realiserAction: function(type, position=null) {
+        switch (type) {
+            case "jouerDeplacement":
+                this.getMaitreDuJeu().jouerDeplacement(position);
+                break;
+            case "jouerPorte":
+                this.getMaitreDuJeu().jouerPorte();
+                break;
+            default:
+                console.log("Operation impossible : argument type invalide.");
+        }
     }
 };
