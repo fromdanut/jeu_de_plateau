@@ -14,10 +14,10 @@ body {
 }
 
 #plateau, #combat {
-    margin: 20px auto;
+    margin: auto;
     border: 1px solid #ff8000;
     background-color: #323232;
-    width: 580px;
+    width: 548px;
     box-shadow: 2px 2px black;
 }
 
@@ -32,7 +32,7 @@ body {
     width: 200px;
     border: 1px solid #ff8000;
     background-color: #182128;
-    margin: 10px 43px 30px 43px;
+    margin: 10px 32px 30px 32px;
     padding: 10px;
     box-shadow: 2px 2px #ff8000;
     display: inline-block;
@@ -41,7 +41,7 @@ body {
 }
 
 .barre {
-    width:578px;
+    width:546px;
     height: 10px;
     background-color: #152025;
     display: inline-block;

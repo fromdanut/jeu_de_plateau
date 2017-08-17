@@ -128,14 +128,14 @@ Page.creerBoutonElt = function(attaque="normale") {
   */
 Page.creerBarreDeVieElt = function() {
     // Le total de point de vie correspond à la moitier de la largeur du div combat.
-    var totalPDV = 288;
+    var totalPDV = 272;
     // Pdv du joueur 1.
     var vieJ1Elt = this.creerDiv(classe="vieJ1");
-    var width = Math.ceil((this.getControlleur().getJoueurs()[0].getVie() / 100) * totalPDV);
+    var width = Math.floor((this.getControlleur().getJoueurs()[0].getVie() / 100) * totalPDV);
     vieJ1Elt.style.width = String(width) + "px";
     // Pdv du joueur 2.
     var vieJ2Elt = this.creerDiv(classe="vieJ2");
-    width =  Math.ceil((this.getControlleur().getJoueurs()[1].getVie() / 100) * totalPDV);
+    width =  Math.floor((this.getControlleur().getJoueurs()[1].getVie() / 100) * totalPDV);
     vieJ2Elt.style.width = String(width) + "px";
     // La barre de point de vie.
     var barreElt = this.creerDiv(classe="barre");
@@ -305,7 +305,7 @@ Page.dessinerFinPartie = function() {
     document.getElementById("combat").appendChild(imgElt);
 
     // Ajoute message de félicitation (augmente la taille de la police)
-    var message = "Félicitation " + vainqueur.getNom() + " t'as gagné cette partie !";
+    var message = "Félicitations " + vainqueur.getNom() + " t'as gagné cette partie !";
     felicitationElt = this.creerMessageElt(message);
     felicitationElt.style.fontSize = "200%";
     document.getElementById("combat").appendChild(felicitationElt);
