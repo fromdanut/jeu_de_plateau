@@ -105,14 +105,30 @@ MaitreDuJeu.placerAuHasard = function(joueur) {
         }
     }
 }
+
 /**
-  * Place les deux joueurs au hasard sur le plateau, utilisé dans la méthode init.
+  * Place les deux joueurs au hasard sur le plateau, uen vérifiant qu'ils ne
+  * soient pas cote à cote.
   *
   * @returns    {Void}
   */
 MaitreDuJeu.placerJoueurs = function(){
-    for (var i = 0; i < this.getJoueurs().length; i++) {
-        this.placerAuHasard(this.getJoueurs()[i]);
+    // Place les deux joueurs au hasard sur le plateau.
+    this.placerAuHasard(this.getJoueurActif());
+    this.placerAuHasard(this.getJoueurActif(false));
+    // Vérifie qu'ils ne sont pas cote à cote.
+    while (true) {
+        console.log("MaitreDuJeu.placerJoueurs");
+        if (this.verifierCombat()) {
+            // Enlève le joueur actif de sa position.
+            this.plateau[this.getJoueurActif().getPosition()].pop();
+            console.log("MaitreDuJeu.placerJoueurs break");
+            // Le replace au hasard sur le plateau.
+            this.placerAuHasard(this.getJoueurActif());
+        }
+        else {
+            break;
+        }
     }
 }
 
@@ -254,7 +270,7 @@ MaitreDuJeu.trouverVainqueur = function() {
 }
 
 /**
-* Vérifie si le joueur actif est collé à son advservaire.
+* Vérifie si les deux joueurs sont cote à cote.
 *
 * @returns	{Boolean}
 */

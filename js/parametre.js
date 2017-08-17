@@ -5,10 +5,15 @@
 
 var parametre = {
 
-    // Parametre globaux, concerne surtout le controlleur.
+    // Parametre pour la gestion du plateau concerne le MaitreDuJ et controlleur.
     DISTANCE_DEPLACEMENT: 3,
+    NB_ARME_FAIBLE: 2,
+    NB_ARME_MOYEN: 1,
+    NB_ARME_FORT: 1,
+    NB_OBSTACLE: 10,
+    NB_VORTEX: 1,
 
-    // Param pour la création des joueurs.
+    // Parametre pour le rendu, concerne surtout la Page.
     J1: {
         nom: "Nibor",
         img: "../img/j1.png",
@@ -63,9 +68,4 @@ var parametre = {
         imgAccessible: "../img/vide_accessible.png",
     },
 
-    NB_ARME_FAIBLE: 2,
-    NB_ARME_MOYEN: 1,
-    NB_ARME_FORT: 1,
-    NB_OBSTACLE: 10,
-    NB_VORTEX: 1,
 };

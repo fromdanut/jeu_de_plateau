@@ -34,7 +34,7 @@ PlateauGenerateur.melanger = function(tableau) {
   * Ajoute un nombre de cellule au plateau.
   *
   * @param   {Number}  nb              Nombre de cellule.
-  * @param   {Cellule} type     Le type de cellule (arme, obstacle, etc.).
+  * @param   {Cellule} type            Le type de cellule (arme, obstacle, etc.).
   * @param   {Array}   plateau         Le plateau.
   * @param   {Array}   options         Les options.
   * @returns {Void}
@@ -93,7 +93,7 @@ PlateauGenerateur.creerPlateau = function() {
 
     // et le vortex.
     this.ajouterCellule(
-        this.getControlleur().getParametre().NB_ARME_FORT,
+        this.getControlleur().getParametre().NB_VORTEX,
         type="vortex",
         plateau,
         this.getControlleur().getParametre().VORTEX
