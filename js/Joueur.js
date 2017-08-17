@@ -19,6 +19,8 @@ Joueur.setParam = function(param) {
     this.nom = param.nom;
     this.img = param.img;
     this.imgActif = param.imgActif;
+    this.imgCombat = param.imgCombat;
+    this.imgVainqueur = param.imgVainqueur;
 }
 
 Joueur.getVie = function() {
@@ -83,6 +85,10 @@ Joueur.getImg = function(param) {
     return img;
 }
 
+Joueur.getImgCombat = function() {
+    return this.imgCombat;
+}
+
 /**
   * Affecte une position (par défault à 0).
   *
@@ -99,13 +105,35 @@ Joueur.setPosition = function(position=0) {
 }
 
 /**
-  * Quant un joueur attaque sa cible subit des dégâts.
+  * Quant un joueur attaque sa cible subit des dégâts. Il peut tenter une
+  * attaque kamikaze qui inflige 2 fois plus de dégat mais si l'attaque est
+  * manqué il se frappe lui-même.
   *
-  * @param      {Joueur}   cible    Le joueur ciblé.
-  * @returns	{Void}
+  * @param      {Joueur}    cible    Le joueur ciblé.
+  * @param      {Boolean}   kamikaze option d'attaque.
+  * @returns	{True}               true si attaque réussi, false sinon.
   */
-Joueur.attaque = function(cible) {
-    cible.subir(this.arme.getDegat());
+Joueur.attaquer = function(cible, kamikaze=false) {
+    if (kamikaze) {
+        var degat = this.getArme().getDegat() * 2;
+        // une chance sur 2.
+        console.log(this.getArme().getDegat());
+        if (Math.random() > 0.5) {
+            console.log("Joueur.attaquer, kamikaze");
+            cible.subir(degat);
+            return true;
+        }
+        else {
+            this.subir(degat);
+            return false;
+        }
+    }
+    else {
+        cible.subir(this.getArme().getDegat());
+        console.log("Joueur.attaquer, else");
+        console.log(this.getArme().getDegat());
+        return true;
+    }
 }
 
 /**

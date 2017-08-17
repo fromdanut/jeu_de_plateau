@@ -24,10 +24,10 @@ Fabrique.creerCellule = function(type, param) {
             obstacle.init(this.getControlleur(), param);
             return obstacle;
             break;
-        case "porte":
-            var porte = Object.create(Porte);
-            porte.init(this.getControlleur(), param);
-            return porte;
+        case "vortex":
+            var vortex = Object.create(Vortex);
+            vortex.init(this.getControlleur(), param);
+            return vortex;
             break;
         case "vide":
             // Correspond à une Cellule vide (ni arme ni obstacle).

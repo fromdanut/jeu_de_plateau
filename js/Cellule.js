@@ -112,10 +112,10 @@ Vide.init = function(controlleur, param) {
 }
 
 /**
-  * Prototype de la porte. Elle repositionne le joueur au hasard sur la carte.
+  * Prototype de le vortex. Elle repositionne le joueur au hasard sur la carte.
   */
-var Porte = Object.create(Cellule);
+var Vortex = Object.create(Cellule);
 
-Porte.init = function(controlleur, param) {
+Vortex.init = function(controlleur, param) {
     this.initCellule(controlleur, param);
 }

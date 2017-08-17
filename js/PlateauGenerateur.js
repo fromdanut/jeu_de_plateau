@@ -91,12 +91,12 @@ PlateauGenerateur.creerPlateau = function() {
         this.getControlleur().getParametre().ARME.fort
     );
 
-    // et la porte.
+    // et le vortex.
     this.ajouterCellule(
         this.getControlleur().getParametre().NB_ARME_FORT,
-        type="porte",
+        type="vortex",
         plateau,
-        this.getControlleur().getParametre().PORTE
+        this.getControlleur().getParametre().VORTEX
     );
 
 

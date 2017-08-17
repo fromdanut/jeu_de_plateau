@@ -117,16 +117,25 @@ MaitreDuJeu.placerJoueurs = function(){
 }
 
 /**
-  * Trouve le joueur actif.
+  * Trouve le joueur actif par défaut, si actif = false, retourne le joueur
+  * inactif.
   *
-  * @returns	{Joueur}			Le joueur avec l'attribut actif à True.
+  * @param      {Boolean}    actif
+  * @returns	{Joueur}
   */
-MaitreDuJeu.getJoueurActif = function() {
-    for (var i = 0; i < this.joueurs.length; i++) {
-        if (this.joueurs[i].getActif()) {
-            return this.joueurs[i];
+MaitreDuJeu.getJoueurActif = function(actif=true) {
+    if (this.getJoueurs()[0].getActif()) {
+        if (actif) {
+            return this.getJoueurs()[0];
         }
     }
+    else {
+        if (!actif) {
+            return this.getJoueurs()[0];
+        }
+    }
+    return this.getJoueurs()[1];
+
 }
 
 /**
@@ -257,11 +266,11 @@ MaitreDuJeu.verifierCombat = function() {
  * Retourne une liste de 4 liste de position (nord, sud, ouest, est).
  *
  * @param   {Number} position  La position à partir de laquelle on cherche.
- * @param   {Number} portee    La portée à la quelle on cherche.
+ * @param   {Number} vortexe    La portée à la quelle on cherche.
  * @returns {Array}            La liste des positions adjacentes [ [nord],
                                [sud], [ouest], [est]].
  */
-MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
+MaitreDuJeu.trouverPositionAdjacente = function(position, vortexe=1) {
     var posAdj = [[], [], [], []], posTemp;
     var largeurPlateau = this.getControlleur().getParametre().LARGEUR_PLATEAU;
     // Stocke les limites du plateau en fonction de la position.
@@ -276,7 +285,7 @@ MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
     // On cherche dans les 4 directions.
     ['nord', 'sud', 'est', 'ouest'].forEach(function(direction) {
         // Sur une longueur égale à la portée.
-        for (var i = 0; i < portee; i++) {
+        for (var i = 0; i < vortexe; i++) {
             switch (direction) {
                 case 'nord': // Vers le nord.
                     posTemp = position - ((i + 1) * largeurPlateau);
@@ -312,23 +321,63 @@ MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
 }
 
 /**
-  * Lance un combat entre 2 joueurs avec a attaquant et un défenseur.
-  * C'est l'attaquant qui commence le combat.
+  * Lance le combat en demandant à la page de dessiner.
   *
-  * @param	    {Joueur}	attaquant	L'attaquant, 1er à frapper.
-  * @param	    {Joueur}	défenseur	Le défenseur.
   * @returns	{Void}
   */
 MaitreDuJeu.lancerCombat = function() {
-    console.log('lancerCombat');
+    this.getControlleur().getPage().dessinerCombat(codeMessage=1);
 }
 
 /**
-  * Jouer porte consiste à repositioner le joueur actif sur une cellule au hasard.
+  * Gère le combat en fonction de l'attaque du joueur actif (normal/kamikaze).
+  * Recoit le choix du joueur depuis la page, met en oeuvre ce choix,
+  * change le joueur actif.
+  * Renvoie true si le combat est fini (un joueur et mort) false s'il continue.
+  *
+  * @param      {Number} codeAttaque 1 pour normal, 2 pour kamikaze.
+  * @returns	{Boolean}
+  */
+MaitreDuJeu.gererCombat = function(codeAttaque) {
+    // attaque kamikaze.
+    if (codeAttaque === "2") {
+        var attaque = this.getJoueurActif().attaquer(
+            this.getJoueurActif(false), kamikaze=true);
+    }
+    // attaque normale.
+    else {
+        var attaque = this.getJoueurActif().attaquer(
+            this.getJoueurActif(false), kamikaze=false);
+    }
+
+    // Vérifie si un joueur est mort.
+    for (var i = 0; i < this.getJoueurs().length; i++) {
+        if (this.getJoueurs()[i].getVie() <= 0) {
+            this.getControlleur().getPage().dessinerCombat(codeMessage=0);
+            return true;
+        }
+    }
+
+    // Si les deux joueurs sont vivants, continue...
+    this.changerJoueurActif();
+
+    // Renvoie le message.
+    if (attaque) {
+        this.getControlleur().getPage().dessinerCombat(codeMessage=2);
+        return false;
+    }
+    else {
+        this.getControlleur().getPage().dessinerCombat(codeMessage=3);
+        return false;
+    }
+}
+
+/**
+  * Jouer vortex consiste à repositioner le joueur actif sur une cellule au hasard.
   * Lance this.jouer (commun à toutes les actions).
   * @returns	{Void}
   */
-MaitreDuJeu.jouerPorte = function() {
+MaitreDuJeu.jouerVortex = function() {
     jActif = this.getJoueurActif();
     // Enlève le joueur actif de sa place actuelle.
     this.getPlateau()[jActif.getPosition()].pop();
@@ -376,6 +425,7 @@ MaitreDuJeu.jouer = function(position) {
     var combat = this.verifierCombat();
     if (combat) {
         this.lancerCombat();
+        return true;
     }
     // Incrémente l'attribut tour.
     var newTour = this.getTour() + 1
@@ -386,4 +436,18 @@ MaitreDuJeu.jouer = function(position) {
     this.genererCelluleAccessible();
     // Redessiner le plateau.
     this.getControlleur().getPage().dessinerPlateau(this.getPlateau());
+}
+
+/**
+  * Retourne le vainqueur (le premier joueur ayant encore des points de vie. Il
+  * ne faut appeler cette fonction qu'une fois la partie terminée donc.
+  *
+  * @returns	{Joueur}    Le vainqueur.
+  */
+MaitreDuJeu.trouverVainqueur = function() {
+    for (var i = 0; i < this.getJoueurs().length; i++) {
+        if (this.getJoueurs()[i].getVie() > 0) {
+            return this.getControlleur().getJoueurs()[i];
+        }
+    }
 }

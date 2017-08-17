@@ -23,7 +23,7 @@ var Controlleur = {
         // Calcule et ajoute quelques constantes en fonction des paramètres.
         parametre.NB_VIDE = parametre.NB_CELLULE - parametre.NB_ARME_FAIBLE -
                                  parametre.NB_ARME_MOYEN - parametre.NB_ARME_FORT -
-                                 parametre.NB_OBSTACLE - parametre.NB_PORTE;
+                                 parametre.NB_OBSTACLE - parametre.NB_VORTEX;
         this.parametre = parametre;
         console.log("Fin controlleur.setParametre");
     },
@@ -118,8 +118,8 @@ var Controlleur = {
             case "jouerDeplacement":
                 this.getMaitreDuJeu().jouerDeplacement(position);
                 break;
-            case "jouerPorte":
-                this.getMaitreDuJeu().jouerPorte();
+            case "jouerVortex":
+                this.getMaitreDuJeu().jouerVortex();
                 break;
             default:
                 console.log("Operation impossible : argument type invalide.");

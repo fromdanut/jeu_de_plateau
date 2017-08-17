@@ -10,14 +10,18 @@ var parametre = {
 
     // Param pour la création des joueurs.
     J1: {
-        nom: "Roger",
+        nom: "Nibor",
         img: "../img/j1.png",
         imgActif: "../img/j1_actif.png",
+        imgCombat: "../img/j1_combat.png",
+        imgVainqueur: "../img/j1_vainqueur.png",
     },
     J2: {
-        nom: "Regor",
+        nom: "Ribno",
         img: "../img/j2.png",
         imgActif: "../img/j2_actif.png",
+        imgCombat: "../img/j2_combat.png",
+        imgVainqueur: "../img/j2_vainqueur.png",
     },
 
     // Param pour la création des cellules.
@@ -49,9 +53,9 @@ var parametre = {
         imgAccessible: "../img/obstacle.png",
     },
 
-    PORTE: {
-        img: "../img/porte.png",
-        imgAccessible: "../img/porte_accessible.png",
+    VORTEX: {
+        img: "../img/vortex.png",
+        imgAccessible: "../img/vortex_accessible.png",
     },
 
     VIDE: {
@@ -64,5 +68,7 @@ var parametre = {
     NB_ARME_MOYEN: 1,
     NB_ARME_FORT: 1,
     NB_OBSTACLE: 10,
-    NB_PORTE: 1,
+    NB_VORTEX: 1,
+
+    IMG_FIN_PARTIE: "../img/gameover.png",
 };

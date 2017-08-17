@@ -1,26 +1,74 @@
 body {
-   background-color: #182128;
+   background-color: #152025;
    font-family: Courier, monospace;
+   color: white;
+   text-align: center;
 }
 
-h1 {
+#titre {
     text-align: center;
-    color: rgba(128, 0, 128);
+    color: white;
     margin-bottom: 10px;
     padding-bottom: 10px;
+    font-size: 200%;
 }
 
-#plateau {
-    margin: 10px auto;
-    border: 25px solid #07090b;
-    background-color: rgba(50, 50, 50);
-    border-collapse: collapse;
+#plateau, #combat {
+    margin: 20px auto;
+    border: 1px solid #ff8000;
+    background-color: #323232;
     width: 580px;
+    box-shadow: 2px 2px black;
 }
 
 .cellule {
     height: 50px;
     width: 50px;
-    text-align: center;
     background-repeat: no-repeat;
+}
+
+
+.bouton {
+    width: 200px;
+    border: 1px solid #ff8000;
+    background-color: #182128;
+    margin: 10px 43px 30px 43px;
+    padding: 10px;
+    box-shadow: 2px 2px #ff8000;
+    display: inline-block;
+    color: inherit;
+    font-family: inherit;
+}
+
+.barre {
+    width:578px;
+    height: 10px;
+    background-color: #152025;
+    display: inline-block;
+    border: solid 1px black;
+}
+
+.vieJ1 {
+    height: 10px;
+    display: inline-block;
+    border-right: solid 1px black;
+    background-color: #800080;
+    float: left;
+}
+
+.vieJ2 {
+    height: 10px;
+    display: inline-block;
+    border-left: solid 1px black;
+    background-color: #ff0080;
+    float: right;
+}
+
+.message {
+    font-size: 120%;
+}
+
+.gameOver {
+    margin: auto;
+    font-size: 200%;
 }
