@@ -240,6 +240,20 @@ MaitreDuJeu.changerJoueurActif = function() {
 }
 
 /**
+  * Retourne le vainqueur (le premier joueur ayant encore des points de vie. Il
+  * ne faut appeler cette fonction qu'une fois la partie terminée donc.
+  *
+  * @returns	{Joueur}    Le vainqueur.
+  */
+MaitreDuJeu.trouverVainqueur = function() {
+    for (var i = 0; i < this.getJoueurs().length; i++) {
+        if (this.getJoueurs()[i].getVie() > 0) {
+            return this.getControlleur().getJoueurs()[i];
+        }
+    }
+}
+
+/**
 * Vérifie si le joueur actif est collé à son advservaire.
 *
 * @returns	{Boolean}
@@ -436,18 +450,4 @@ MaitreDuJeu.jouer = function(position) {
     this.genererCelluleAccessible();
     // Redessiner le plateau.
     this.getControlleur().getPage().dessinerPlateau(this.getPlateau());
-}
-
-/**
-  * Retourne le vainqueur (le premier joueur ayant encore des points de vie. Il
-  * ne faut appeler cette fonction qu'une fois la partie terminée donc.
-  *
-  * @returns	{Joueur}    Le vainqueur.
-  */
-MaitreDuJeu.trouverVainqueur = function() {
-    for (var i = 0; i < this.getJoueurs().length; i++) {
-        if (this.getJoueurs()[i].getVie() > 0) {
-            return this.getControlleur().getJoueurs()[i];
-        }
-    }
 }

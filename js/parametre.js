@@ -63,12 +63,9 @@ var parametre = {
         imgAccessible: "../img/vide_accessible.png",
     },
 
-    // Dimenssion du plateau pour le plateau Generateur
     NB_ARME_FAIBLE: 2,
     NB_ARME_MOYEN: 1,
     NB_ARME_FORT: 1,
     NB_OBSTACLE: 10,
     NB_VORTEX: 1,
-
-    IMG_FIN_PARTIE: "../img/gameover.png",
 };
