@@ -13,6 +13,8 @@ var Controlleur = {
         this.setJoueurs();
         this.setMaitreDuJeu();
         this.setPage();
+        console.log("Fin de l'initialisation du controleur :");
+        console.log(this);
     },
 
     setParametre: function(parametre) {
@@ -25,7 +27,6 @@ var Controlleur = {
                                  parametre.NB_ARME_MOYEN - parametre.NB_ARME_FORT -
                                  parametre.NB_OBSTACLE - parametre.NB_VORTEX;
         this.parametre = parametre;
-        console.log("Fin controlleur.setParametre");
     },
 
     getParametre: function() {
@@ -39,7 +40,6 @@ var Controlleur = {
         var fabrique = Object.create(Fabrique);
         fabrique.init(this);
         this.fabrique = fabrique;
-        console.log("Fin controlleur.setFabrique");
     },
 
     getFabrique: function() {
@@ -50,8 +50,6 @@ var Controlleur = {
         // On utilise le générateur de plateau pour fabriquer le plateau.
         var plateauGenerateur = this.getFabrique().creerPlateauGenerateur();
         this.plateau = plateauGenerateur.creerPlateau();
-        console.log("Fin controlleur.setPlateau");
-        console.log(this.getPlateau());
     },
 
     getPlateau: function() {
@@ -67,9 +65,6 @@ var Controlleur = {
         this.joueurs.push(j1);
         var j2 = this.getFabrique().creerJoueur(param=this.getParametre().J2);
         this.joueurs.push(j2);
-
-        console.log("Fin controlleur.setJoueurs");
-        console.log(this.getParametre());
     },
 
     getJoueurs: function() {
@@ -80,7 +75,6 @@ var Controlleur = {
         this.maitreDuJeu = this.getFabrique().creerMaitreDuJeu(plateau=this.getPlateau(),
                                                             joueurs=this.getJoueurs(),
                                                             );
-        console.log("Fin controlleur.setMaitreDuJeu");
     },
 
     getMaitreDuJeu: function() {
@@ -89,7 +83,6 @@ var Controlleur = {
 
     setPage: function() {
         this.page = this.getFabrique().creerPage();
-        console.log("Fin controlleur.setPage");
     },
 
     getPage: function() {

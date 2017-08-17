@@ -118,11 +118,9 @@ MaitreDuJeu.placerJoueurs = function(){
     this.placerAuHasard(this.getJoueurActif(false));
     // Vérifie qu'ils ne sont pas cote à cote.
     while (true) {
-        console.log("MaitreDuJeu.placerJoueurs");
         if (this.verifierCombat()) {
             // Enlève le joueur actif de sa position.
             this.plateau[this.getJoueurActif().getPosition()].pop();
-            console.log("MaitreDuJeu.placerJoueurs break");
             // Le replace au hasard sur le plateau.
             this.placerAuHasard(this.getJoueurActif());
         }

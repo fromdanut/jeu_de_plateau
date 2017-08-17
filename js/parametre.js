@@ -16,56 +16,56 @@ var parametre = {
     // Parametre pour le rendu, concerne surtout la Page.
     J1: {
         nom: "Nibor",
-        img: "../img/j1.png",
-        imgActif: "../img/j1_actif.png",
-        imgCombat: "../img/j1_combat.png",
-        imgVainqueur: "../img/j1_vainqueur.png",
+        img: "../img/joueur/j1.png",
+        imgActif: "../img/joueur/j1_actif.png",
+        imgCombat: "../img/joueur/j1_combat.png",
+        imgVainqueur: "../img/joueur/j1_vainqueur.png",
     },
     J2: {
         nom: "Ribno",
-        img: "../img/j2.png",
-        imgActif: "../img/j2_actif.png",
-        imgCombat: "../img/j2_combat.png",
-        imgVainqueur: "../img/j2_vainqueur.png",
+        img: "../img/joueur/j2.png",
+        imgActif: "../img/joueur/j2_actif.png",
+        imgCombat: "../img/joueur/j2_combat.png",
+        imgVainqueur: "../img/joueur/j2_vainqueur.png",
     },
 
     // Param pour la création des cellules.
     ARME: {
         minimum: {
             degat: 10,
-            img: "../img/arme_minimum.png",
-            imgAccessible: "../img/arme_minimum_accessible.png",
+            img: "../img/cellule/arme/arme_minimum.png",
+            imgAccessible: "../img/cellule/arme/arme_minimum_accessible.png",
         },
         faible: {
             degat: 15,
-            img: "../img/arme_faible.png",
-            imgAccessible: "../img/arme_faible_accessible.png",
+            img: "../img/cellule/arme/arme_faible.png",
+            imgAccessible: "../img/cellule/arme/arme_faible_accessible.png",
         },
         moyen: {
             degat: 20,
-            img: "../img/arme_moyen.png",
-            imgAccessible: "../img/arme_moyen_accessible.png",
+            img: "../img/cellule/arme/arme_moyen.png",
+            imgAccessible: "../img/cellule/arme/arme_moyen_accessible.png",
         },
         fort: {
             degat: 25,
-            img: "../img/arme_fort.png",
-            imgAccessible: "../img/arme_fort_accessible.png",
+            img: "../img/cellule/arme/arme_fort.png",
+            imgAccessible: "../img/cellule/arme/arme_fort_accessible.png",
         },
     },
 
     OBSTACLE: {
-        img: "../img/obstacle.png",
-        imgAccessible: "../img/obstacle.png",
+        img: "../img/cellule/obstacle.png",
+        imgAccessible: "../img/cellule/obstacle.png",
     },
 
     VORTEX: {
-        img: "../img/vortex.png",
-        imgAccessible: "../img/vortex_accessible.png",
+        img: "../img/cellule/vortex.png",
+        imgAccessible: "../img/cellule/vortex_accessible.png",
     },
 
     VIDE: {
-        img: "../img/vide.png",
-        imgAccessible: "../img/vide_accessible.png",
+        img: "../img/cellule/vide.png",
+        imgAccessible: "../img/cellule/vide_accessible.png",
     },
 
 };

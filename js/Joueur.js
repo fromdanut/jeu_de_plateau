@@ -117,9 +117,7 @@ Joueur.attaquer = function(cible, kamikaze=false) {
     if (kamikaze) {
         var degat = this.getArme().getDegat() * 2;
         // une chance sur 2.
-        console.log(this.getArme().getDegat());
         if (Math.random() > 0.5) {
-            console.log("Joueur.attaquer, kamikaze");
             cible.subir(degat);
             return true;
         }
@@ -130,8 +128,6 @@ Joueur.attaquer = function(cible, kamikaze=false) {
     }
     else {
         cible.subir(this.getArme().getDegat());
-        console.log("Joueur.attaquer, else");
-        console.log(this.getArme().getDegat());
         return true;
     }
 }
