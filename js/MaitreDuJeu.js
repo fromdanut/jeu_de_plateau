@@ -1,7 +1,7 @@
 /**
   * Prototype du maitre du jeu. C'est lui qui coordonne l'ensemble du jeu.
   * Il place les cellules sur le plateau,
-  * fait se déplacer les joueurs, fait les combats.
+  * fait se déplacer les joueurs, gère les combats.
   */
 
 var MaitreDuJeu = Object.create(Composant);
@@ -141,8 +141,8 @@ MaitreDuJeu.getJoueurActif = function(actif=true) {
             return this.getJoueurs()[0];
         }
     }
-    return this.getJoueurs()[1];
 
+    return this.getJoueurs()[1];
 }
 
 /**
@@ -287,11 +287,11 @@ MaitreDuJeu.verifierCombat = function() {
  * Retourne une liste de 4 liste de position (nord, sud, ouest, est).
  *
  * @param   {Number} position  La position à partir de laquelle on cherche.
- * @param   {Number} vortexe    La portée à la quelle on cherche.
+ * @param   {Number} portee   La portée à la quelle on cherche.
  * @returns {Array}            La liste des positions adjacentes [ [nord],
                                [sud], [ouest], [est]].
  */
-MaitreDuJeu.trouverPositionAdjacente = function(position, vortexe=1) {
+MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
     var posAdj = [[], [], [], []], posTemp;
     var largeurPlateau = this.getControlleur().getParametre().LARGEUR_PLATEAU;
     // Stocke les limites du plateau en fonction de la position.
@@ -306,7 +306,7 @@ MaitreDuJeu.trouverPositionAdjacente = function(position, vortexe=1) {
     // On cherche dans les 4 directions.
     ['nord', 'sud', 'est', 'ouest'].forEach(function(direction) {
         // Sur une longueur égale à la portée.
-        for (var i = 0; i < vortexe; i++) {
+        for (var i = 0; i < portee; i++) {
             switch (direction) {
                 case 'nord': // Vers le nord.
                     posTemp = position - ((i + 1) * largeurPlateau);
