@@ -29,6 +29,11 @@ Fabrique.creerCellule = function(type, param) {
             vortex.init(this.getControlleur(), param);
             return vortex;
             break;
+        case "echangeur":
+            var echangeur = Object.create(Echangeur);
+            echangeur.init(this.getControlleur(), param);
+            return echangeur;
+            break;
         case "vide":
             // Correspond à une Cellule vide (ni arme ni obstacle).
             var cellule = Object.create(Vide);

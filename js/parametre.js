@@ -12,6 +12,7 @@ var parametre = {
     NB_ARME_FORT: 1,
     NB_OBSTACLE: 10,
     NB_VORTEX: 1,
+    NB_ECHANGEUR: 1,
 
     // Parametre pour le rendu, concerne surtout la Page.
     J1: {
@@ -61,6 +62,11 @@ var parametre = {
     VORTEX: {
         img: "../img/cellule/vortex.png",
         imgAccessible: "../img/cellule/vortex_accessible.png",
+    },
+
+    ECHANGEUR: {
+        img: "../img/cellule/echangeur.png",
+        imgAccessible: "../img/cellule/echangeur_accessible.png",
     },
 
     VIDE: {

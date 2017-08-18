@@ -406,11 +406,23 @@ MaitreDuJeu.gererCombat = function(codeAttaque) {
   * @returns	{Void}
   */
 MaitreDuJeu.jouerVortex = function() {
-    jActif = this.getJoueurActif();
+    var jActif = this.getJoueurActif();
     // Enlève le joueur actif de sa place actuelle.
     this.getPlateau()[jActif.getPosition()].pop();
     this.placerAuHasard(jActif);
     this.jouer();
+}
+
+/**
+  * Consiste à échanger les armes des deux joueurs.
+  * Lance this.jouer (commun à toutes les actions).
+  * @returns	{Void}
+  */
+MaitreDuJeu.jouerEchangeur = function() {
+    var armeJActif = this.getJoueurActif().getArme();
+    var armeJInactif = this.getJoueurActif(false).getArme();
+    this.getJoueurActif().setArme(armeJInactif);
+    this.getJoueurActif(false).setArme(armeJActif);
 }
 
 /**
@@ -433,7 +445,7 @@ MaitreDuJeu.jouerDeplacement = function(position) {
   }
   // Déplacer le joueur actif sur sa nouvelle position
   this.deplacer(this.getJoueurActif(), position);
-  this.jouer();
+  this.jouer(position);
 }
 
 /**
@@ -448,7 +460,11 @@ MaitreDuJeu.jouerDeplacement = function(position) {
   * @returns	{Void}
   */
 MaitreDuJeu.jouer = function(position) {
-
+    cellule = this.getPlateau()[position][0];
+    // Si la cellule est un échangeur.
+    if (Echangeur.isPrototypeOf(cellule)) {
+        this.jouerEchangeur();
+    }
     // Vérifie si les deux joueurs sont cote à cote, si oui lance le combat.
     var combat = this.verifierCombat();
     if (combat) {

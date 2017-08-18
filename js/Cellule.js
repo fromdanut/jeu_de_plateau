@@ -115,7 +115,14 @@ Vide.init = function(controlleur, param) {
   * Prototype de le vortex. Elle repositionne le joueur au hasard sur la carte.
   */
 var Vortex = Object.create(Cellule);
-
 Vortex.init = function(controlleur, param) {
+    this.initCellule(controlleur, param);
+}
+
+/**
+  * Prototype de l'echangeur. Il échange entre elles les armes des deux joueurs.
+  */
+var Echangeur = Object.create(Cellule);
+Echangeur.init = function(controlleur, param) {
     this.initCellule(controlleur, param);
 }

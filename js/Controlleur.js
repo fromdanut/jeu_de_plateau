@@ -114,6 +114,10 @@ var Controlleur = {
             case "jouerVortex":
                 this.getMaitreDuJeu().jouerVortex();
                 break;
+            case "jouerEchangeur":
+                console.log("Controlleur.realiserAction jouerEchangeur");
+                this.getMaitreDuJeu().jouerEchangeur();
+                break;
             default:
                 console.log("Operation impossible : argument type invalide.");
         }
