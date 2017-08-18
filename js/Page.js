@@ -213,12 +213,6 @@ Page.dessinerPlateau = function(plateau) {
   */
 Page.dessinerCombat = function(codeMessage=1) {
 
-    // Si on a un message de fin du jeu.
-    if (codeMessage === 0) {
-        this.dessinerFinPartie();
-        return false;
-    }
-
     // Supprime le plateau s'il est encore là (correspond au début du combat).
     if (document.getElementById("plateau")) {
         this.supprimerElt("plateau");

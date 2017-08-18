@@ -99,8 +99,8 @@ var Controlleur = {
     },
 
     /**
-      * La Page va demander au controlleur de jouer un tour lors d'un évènement.
-      * Le controlleur se contente de relayer la demande au maitre du jeu.
+      * Fait le lien entre les actions des joueurs (EventListener écrit par
+      * la Page) et le maitre du jeu.
       *
       * @param   {String} type     Le type correspond a une méthode du Maitre du Jeu.
       * @param   {Number} position Correspond à la position de la cellule clikée.
@@ -110,10 +110,23 @@ var Controlleur = {
     realiserAction: function(type, position=null, attaque=null) {
         switch (type) {
             case "jouerMouvement":
-                this.getMaitreDuJeu().jouerMouvement(position=position);
+                var debutCombat = this.getMaitreDuJeu().jouerMouvement(position=position);
+                // Le mouvement amène les deux joueurs cote a cote, le combat commence.
+                if (debutCombat) {
+                    this.getPage().dessinerCombat();
+                }
+                else {
+                    this.getPage().dessinerPlateau(this.getPlateau());
+                }
                 break;
             case "jouerAttaque":
-                this.getMaitreDuJeu().gererCombat(attaque=attaque);
+                var finDePartie = this.getMaitreDuJeu().gererCombat(attaque=attaque)
+                if (finDePartie[0]) {
+                    this.getPage().dessinerFinPartie();
+                }
+                else {
+                    this.getPage().dessinerCombat(finDePartie[1]);
+                }
                 break;
             default:
                 console.log("Operation impossible : argument type invalide.");

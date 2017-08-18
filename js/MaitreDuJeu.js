@@ -342,22 +342,13 @@ MaitreDuJeu.trouverPositionAdjacente = function(position, portee=1) {
 }
 
 /**
-  * Lance le combat en demandant à la page de dessiner.
-  *
-  * @returns	{Void}
-  */
-MaitreDuJeu.lancerCombat = function() {
-    this.getControlleur().getPage().dessinerCombat(codeMessage=1);
-}
-
-/**
   * Gère le combat en fonction de l'attaque du joueur actif (normal/kamikaze).
-  * Recoit le choix du joueur depuis la page, met en oeuvre ce choix,
-  * change le joueur actif.
-  * Renvoie true si le combat est fini (un joueur et mort) false s'il continue.
+  * Recoit le choix du joueur depuis le controlleur, met en oeuvre ce choix.
+  * Renvoie un tableau avec true si le combat est fini (un joueur et mort) et
+  * s'il continue, [false, codeMessage]
   *
   * @param      {String}    attaque     type d'attaque.
-  * @returns	{Boolean}
+  * @returns	{Array}
   */
 MaitreDuJeu.gererCombat = function(attaque) {
     // attaque kamikaze.
@@ -372,14 +363,12 @@ MaitreDuJeu.gererCombat = function(attaque) {
         }
     else {
         console.log("Operation impossible : argument attaque invalide.");
-        console.log(attaque);
     }
 
     // Vérifie si un joueur est mort.
     for (var i = 0; i < this.getJoueurs().length; i++) {
         if (this.getJoueurs()[i].getVie() <= 0) {
-            this.getControlleur().getPage().dessinerCombat(codeMessage=0);
-            return true;
+            return [true];
         }
     }
 
@@ -388,12 +377,10 @@ MaitreDuJeu.gererCombat = function(attaque) {
 
     // Renvoie le message en fonction du succès/echec de l'attaque.
     if (attaque) {
-        this.getControlleur().getPage().dessinerCombat(codeMessage=2);
-        return false;
+        return [false, 2];
     }
     else {
-        this.getControlleur().getPage().dessinerCombat(codeMessage=3);
-        return false;
+        return [false, 3];
     }
 }
 
@@ -429,10 +416,9 @@ MaitreDuJeu.jouerEchangeur = function() {
   *   - incrémenter l'attribut tour.
   *   - changer le joueur actif.
   *   - générer les nouvelles cellules accessibles.
-  *   - enfin demander au page générateur de déssiner le nouveau plateau.
   *
   * @param	    {Number}	position	La position du joueur.
-  * @returns	{Void}
+  * @returns	{Boolean}               Retourne false et true si le combat se lance.
   */
 MaitreDuJeu.jouerMouvement = function(position) {
     if (typeof position ==! 'number') {
@@ -452,10 +438,8 @@ MaitreDuJeu.jouerMouvement = function(position) {
     if (Vortex.isPrototypeOf(cellule)) {
         this.jouerVortex();
     }
-    // Vérifie si les deux joueurs sont cote à cote, si oui lance le combat.
-    var combat = this.verifierCombat();
-    if (combat) {
-        this.lancerCombat();
+    // Vérifie si les deux joueurs sont cote à cote.
+    if (this.verifierCombat()) {
         return true;
     }
     // Incrémente l'attribut tour.
@@ -465,6 +449,7 @@ MaitreDuJeu.jouerMouvement = function(position) {
     this.changerJoueurActif();
     // Calculer les nouvelles cellules accessibles.
     this.genererCelluleAccessible();
-    // Redessiner le plateau.
-    this.getControlleur().getPage().dessinerPlateau(this.getPlateau());
+    // Retourne false
+    return false;
+
 }
