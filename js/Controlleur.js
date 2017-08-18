@@ -104,19 +104,16 @@ var Controlleur = {
       *
       * @param   {String} type     Le type correspond a une méthode du Maitre du Jeu.
       * @param   {Number} position Correspond à la position de la cellule clikée.
+      * @param   {String} attaque  Correspond au type d'attaque demandée.
       * @returns {Void}   Demande au maitre du jeu de faire le travail.
       */
-    realiserAction: function(type, position=null) {
+    realiserAction: function(type, position=null, attaque=null) {
         switch (type) {
-            case "jouerDeplacement":
-                this.getMaitreDuJeu().jouerDeplacement(position);
+            case "jouerMouvement":
+                this.getMaitreDuJeu().jouerMouvement(position=position);
                 break;
-            case "jouerVortex":
-                this.getMaitreDuJeu().jouerVortex();
-                break;
-            case "jouerEchangeur":
-                console.log("Controlleur.realiserAction jouerEchangeur");
-                this.getMaitreDuJeu().jouerEchangeur();
+            case "jouerAttaque":
+                this.getMaitreDuJeu().gererCombat(attaque=attaque);
                 break;
             default:
                 console.log("Operation impossible : argument type invalide.");

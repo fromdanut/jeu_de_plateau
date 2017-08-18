@@ -30,23 +30,15 @@ Page.creerCelluleElt = function(cellule, position) {
     if (!Joueur.isPrototypeOf(cellule)) {
         // Rend le controlleur accessible depuis l'élément.
         celluleElt.controlleur = this.getControlleur();
-        // Vérifie si la cellule est accessible.
+        // Ajoute un EventListener si la cellule est accessible.
         if (cellule.getAccessible()) {
-            // Si c'est une vortex...
-            if (Vortex.isPrototypeOf(cellule)) {
-                celluleElt.addEventListener("click", function(e) {
-                    e.target.controlleur.realiserAction("jouerVortex");
-                });
-            }
-            // C'est donc une cellule vide ou une arme.
-            else {
-                celluleElt.addEventListener("click", function(e) {
-                    var position = e.target.id;
-                    e.target.controlleur.realiserAction(
-                        "jouerDeplacement",
-                        Number(position));
-                    });
-            }
+            celluleElt.addEventListener("click", function(e) {
+                var position = e.target.id;
+                e.target.controlleur.realiserAction(
+                    "jouerMouvement",
+                    position=Number(position),
+                    attaque=null);
+            });
         }
     }
 
@@ -91,10 +83,10 @@ Page.creerMessageElt = function(message) {
 }
 
 /**
-  * Créer un élément bouton pour le choix de l'attaque
+  * Créer un élément bouton pour le choix de l'attaque.
   *
   * @param	 {String}    attaque      Type de l'attaque (normale, kamikaze)
-  * @returns {Elt}                 Un élément.
+  * @returns {Elt}                    Un élément.
   */
 Page.creerBoutonElt = function(attaque="normale") {
     var boutonElt = document.createElement("button");
@@ -102,11 +94,11 @@ Page.creerBoutonElt = function(attaque="normale") {
     switch (attaque) {
         case "normale":
             boutonElt.textContent = "Attaque normale";
-            boutonElt.id = 1;
+            boutonElt.id = "attaqueNormale";
             break;
         case "kamikaze":
             boutonElt.textContent = "Attaque kamikaze";
-            boutonElt.id = 2;
+            boutonElt.id = "attaqueKamikaze";
             break;
         default:
             console.log("Operation impossible : argument attaque invalide.");
@@ -115,7 +107,10 @@ Page.creerBoutonElt = function(attaque="normale") {
     boutonElt.controlleur = this.getControlleur();
     boutonElt.addEventListener("click", function(e) {
         // Envoi le choix (stoqué dans id)
-        e.target.controlleur.getMaitreDuJeu().gererCombat(e.target.id);
+        e.target.controlleur.realiserAction(
+            "jouerAttaque",
+            position=null,
+            attaque=e.target.id);
     });
     return boutonElt;
 }

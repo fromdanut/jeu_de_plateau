@@ -7,13 +7,6 @@
 var MaitreDuJeu = Object.create(Composant);
 MaitreDuJeu.plateau = [];
 
-MaitreDuJeu.LARGEUR_PLATEAU  = 10;
-MaitreDuJeu.NB_CASE = 100;
-MaitreDuJeu.NB_JOUEUR = 2;
-MaitreDuJeu.NB_ARME = 3;
-MaitreDuJeu.NB_OBSTACLE = 12;
-MaitreDuJeu.NB_CASE_VIDE = 85;
-
 MaitreDuJeu.init = function(controlleur, plateau, joueurs) {
     this.initComposant(controlleur);
     this.tour = 0;
@@ -363,19 +356,23 @@ MaitreDuJeu.lancerCombat = function() {
   * change le joueur actif.
   * Renvoie true si le combat est fini (un joueur et mort) false s'il continue.
   *
-  * @param      {Number} codeAttaque 1 pour normal, 2 pour kamikaze.
+  * @param      {String}    attaque     type d'attaque.
   * @returns	{Boolean}
   */
-MaitreDuJeu.gererCombat = function(codeAttaque) {
+MaitreDuJeu.gererCombat = function(attaque) {
     // attaque kamikaze.
-    if (codeAttaque === "2") {
+    if (attaque === "attaqueKamikaze") {
         var attaque = this.getJoueurActif().attaquer(
             this.getJoueurActif(false), kamikaze=true);
     }
     // attaque normale.
-    else {
+    else if (attaque === "attaqueNormale") {
         var attaque = this.getJoueurActif().attaquer(
             this.getJoueurActif(false), kamikaze=false);
+        }
+    else {
+        console.log("Operation impossible : argument attaque invalide.");
+        console.log(attaque);
     }
 
     // Vérifie si un joueur est mort.
@@ -389,7 +386,7 @@ MaitreDuJeu.gererCombat = function(codeAttaque) {
     // Si les deux joueurs sont vivants, continue...
     this.changerJoueurActif();
 
-    // Renvoie le message.
+    // Renvoie le message en fonction du succès/echec de l'attaque.
     if (attaque) {
         this.getControlleur().getPage().dessinerCombat(codeMessage=2);
         return false;
@@ -410,7 +407,6 @@ MaitreDuJeu.jouerVortex = function() {
     // Enlève le joueur actif de sa place actuelle.
     this.getPlateau()[jActif.getPosition()].pop();
     this.placerAuHasard(jActif);
-    this.jouer();
 }
 
 /**
@@ -426,9 +422,9 @@ MaitreDuJeu.jouerEchangeur = function() {
 }
 
 /**
-  * Jouer un déplacement consiste à déplacer le joueur actif sur la position demandée.
-  * Lance this.jouer (commun à toutes les actions).
+  * Jouer un déplacement consiste à un ensemble d'opération :
   *   - déplacer le joueur.
+  *   - réalise une action en fonction de la cellule sur laquelle est le joueur.
   *   - vérifie si le joueur actif s'est collé à un advservaire.
   *   - incrémenter l'attribut tour.
   *   - changer le joueur actif.
@@ -438,32 +434,23 @@ MaitreDuJeu.jouerEchangeur = function() {
   * @param	    {Number}	position	La position du joueur.
   * @returns	{Void}
   */
-MaitreDuJeu.jouerDeplacement = function(position) {
-  if (typeof position ==! 'number') {
-      console.log("Operation impossible : argument position invalide.");
-      return false;
-  }
-  // Déplacer le joueur actif sur sa nouvelle position
-  this.deplacer(this.getJoueurActif(), position);
-  this.jouer(position);
-}
+MaitreDuJeu.jouerMouvement = function(position) {
+    if (typeof position ==! 'number') {
+        console.log("Operation impossible : argument position invalide.");
+        return false;
+    }
+    // Déplacer le joueur actif sur sa nouvelle position
+    this.deplacer(this.getJoueurActif(), position);
 
-/**
-  * Jouer consiste à mettre en oeuvre une routine commune à toutes les actions:
-  *   - vérifie si le joueur actif s'est collé à un adversaire.
-  *   - incrémenter l'attribut tour.
-  *   - changer le joueur actif.
-  *   - générer les nouvelles cellules accessibles.
-  *   - enfin demander au page générateur de déssiner le nouveau plateau.
-  *
-  * @param	    {Number}	position	La position du joueur.
-  * @returns	{Void}
-  */
-MaitreDuJeu.jouer = function(position) {
     cellule = this.getPlateau()[position][0];
+
     // Si la cellule est un échangeur.
     if (Echangeur.isPrototypeOf(cellule)) {
         this.jouerEchangeur();
+    }
+    // Si la cellule est un vortex.
+    if (Vortex.isPrototypeOf(cellule)) {
+        this.jouerVortex();
     }
     // Vérifie si les deux joueurs sont cote à cote, si oui lance le combat.
     var combat = this.verifierCombat();
