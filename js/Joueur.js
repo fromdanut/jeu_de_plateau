@@ -16,6 +16,7 @@ Joueur.init = function(controlleur, arme, param, actif=false) {
 }
 
 Joueur.setParam = function(param) {
+    /* Il faudra ajouter des get et set ici */
     this.nom = param.nom;
     this.img = param.img;
     this.imgActif = param.imgActif;

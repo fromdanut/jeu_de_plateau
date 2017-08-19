@@ -1,6 +1,6 @@
 /**
   * Prototype chargé de créer les composants du programme.
-  * C'est lui qui se charge d'affecter le controlleur au composant.
+  * C'est lui qui se charge d'affecter le controlleur à chaque composant.
   */
 
 var Fabrique = Object.create(Composant);
@@ -48,8 +48,9 @@ Fabrique.creerCellule = function(type, param) {
 }
 
 /**
-  * Créer un joueur avec une arme de base.
+  * Créer un joueur avec une arme de base (minimum).
   *
+  * @param	    {Object}	param	    Contient les parametres du joueur.
   * @returns	{Joueur}    Le joueur.
   */
 Fabrique.creerJoueur = function(param) {
@@ -65,7 +66,9 @@ Fabrique.creerJoueur = function(param) {
 /**
   * Créer le maitre du jeu.
   *
-  * @returns	{MaitreDuJeu}    Le maitre du jeu.
+  * @param      {Array}          plateau    Le plateau de jeu.
+  * @param      {Array}          joueurs    Les joueurs.
+  * @returns	{MaitreDuJeu}               Le maitre du jeu.
   */
 Fabrique.creerMaitreDuJeu = function(plateau, joueurs) {
     maitreDuJeu = Object.create(MaitreDuJeu);

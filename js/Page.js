@@ -279,7 +279,6 @@ Page.dessinerCombat = function(codeMessage=1) {
   * Supprime l'ensemble de la page. Ajoute l'image du vainqueur et un message
   * de félicitation. Relance une partie au bout de 3 secs.
   *
-  * @param	   {Number}	  codeMessage	    Permet de définir le message.
   * @returns
   */
 Page.dessinerFinPartie = function() {

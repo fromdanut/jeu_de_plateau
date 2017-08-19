@@ -231,7 +231,7 @@ MaitreDuJeu.genererCelluleAccessible = function() {
 }
 
 /**
-  * Modifie le joueur actif. Attention, ne fonctionne que pour 2 joueurs !
+  * Modifie le joueur actif, ne fonctionne que pour 2 joueurs !
   *
   * @returns	{Void}
   */
@@ -248,7 +248,7 @@ MaitreDuJeu.changerJoueurActif = function() {
 
 /**
   * Retourne le vainqueur (le premier joueur ayant encore des points de vie. Il
-  * ne faut appeler cette fonction qu'une fois la partie terminée donc.
+  * ne faut appeler cette fonction qu'une fois la partie terminée).
   *
   * @returns	{Joueur}    Le vainqueur.
   */
@@ -386,7 +386,6 @@ MaitreDuJeu.gererCombat = function(attaque) {
 
 /**
   * Jouer vortex consiste à repositioner le joueur actif sur une cellule au hasard.
-  * Lance this.jouer (commun à toutes les actions).
   * @returns	{Void}
   */
 MaitreDuJeu.jouerVortex = function() {
@@ -398,7 +397,6 @@ MaitreDuJeu.jouerVortex = function() {
 
 /**
   * Consiste à échanger les armes des deux joueurs.
-  * Lance this.jouer (commun à toutes les actions).
   * @returns	{Void}
   */
 MaitreDuJeu.jouerEchangeur = function() {

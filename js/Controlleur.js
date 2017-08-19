@@ -1,7 +1,8 @@
 /**
   * Prototype chargé de controller les différents composants du programme.
   * Il est rendu accessible dans l'ensemble des composants.
-  * Il a accès aux parametres.
+  * Il a accès aux parametres. Il controle les différents composant et fait
+  * travailler ensemble le maitre du jeu et la Page.
   */
 
 var Controlleur = {
@@ -90,7 +91,8 @@ var Controlleur = {
     },
 
     /**
-      * Lance la partie en demandant au générateur de page de dessinger le plateau.
+      * Lance la partie consiste simplement à demander à la page de
+      * de dessinger le plateau.
       *
       * @returns	{Void}
       */
