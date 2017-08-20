@@ -146,7 +146,33 @@ MaitreDuJeu.getJoueurActif = function(actif=true) {
 }
 
 /**
-  * Déplace un joueur sur une position du plateau.
+  * Avance un joueur sur une position temporaire, utilisé dans déplacer joueur.
+  * Effectue le changement d'arme si le joueur se positionne sur une cellule de
+  * type arme.
+  *
+  * @param	    {Joueur}	joueur	        Le joueur à déplacer.
+  * @param	    {Number}	positionTemp	La position (indice du tableau plateau).
+  * @returns	{Void}
+  */
+MaitreDuJeu.avancer = function(joueur, positionTemp) {
+    // Enlève le joueur de son ancienne positionTemp et le met sur sa nouvelle.
+    var anciennePosition = joueur.getPosition();
+    this.getPlateau()[positionTemp].push(this.getPlateau()[anciennePosition].pop());
+
+    // Echange l'arme du joueur avec la cellule s'il s'agit d'une cellule Arme.
+    if (Arme.isPrototypeOf(this.getPlateau()[positionTemp][0])) {
+        var armeTemp = this.getPlateau()[positionTemp][0];
+        this.getPlateau()[positionTemp][0] = joueur.getArme();
+        joueur.setArme(armeTemp);
+    }
+
+    // Met à jour la positionTemp du joueur.
+    joueur.setPosition(positionTemp);
+}
+
+/**
+  * Déplace un joueur sur une position du plateau en avancant le joueur
+  * cellule par cellule sur des position temporaires.
   *
   * @param	    {Joueur}	joueur	    Le joueur à déplacer.
   * @param	    {Number}	position	La position (indice du tableau plateau).
@@ -167,19 +193,46 @@ MaitreDuJeu.deplacer = function(joueur, position) {
     if (position < 0 || position > this.getControlleur().getParametre().NB_CELLULE) {
         console.log("Operation impossible : position hors du plateau.");
     }
-    else {
-        // Enlève le joueur de son ancienne position et le met sur sa nouvelle.
-        var anciennePosition = joueur.getPosition();
-        this.getPlateau()[position].push(this.getPlateau()[anciennePosition].pop());
 
-        // Echange l'arme du joueur avec la cellule s'il s'agit d'une cellule Arme.
-        if (Arme.isPrototypeOf(this.getPlateau()[position][0])) {
-            var armeTemp = this.getPlateau()[position][0];
-            this.getPlateau()[position][0] = joueur.getArme();
-            joueur.setArme(armeTemp);
+    var posJoueur = joueur.getPosition();
+    var posTemp = posJoueur;
+    // Inférieur donc vers l'ouest ou vers le nord.
+    if (position < posJoueur) {
+        // Sur la meme ligne donc déplacement vers l'ouest.
+        if (String(position)[0] === String(posJoueur)[0]) {
+            while (posTemp > position) {
+                // Déplace la position du joueur d'une cellelule vers l'ouest.
+                posTemp -= 1;
+                this.avancer(joueur, posTemp);
+            }
         }
-        // Met à jour la position du joueur.
-        joueur.setPosition(position);
+        // Sinon vers le nord
+        else {
+            while (posTemp > position) {
+                // Déplace la position d'une largeur de plateau vers le nord.
+                posTemp -= 1 * this.getControlleur().getParametre().LARGEUR_PLATEAU;
+                this.avancer(joueur, posTemp);
+            }
+        }
+    }
+    // Supérieur donc vers l'est ou le sud.
+    else {
+        // Sur la meme ligne donc vers l'est.
+        if (String(position)[0] === String(posJoueur)[0]) {
+            while (posTemp < position) {
+                // Déplace la position du joueur d'une cellelule vers l'est.
+                posTemp += 1;
+                this.avancer(joueur, posTemp);
+            }
+        }
+        // Else vers le sud.
+        else {
+            while (posTemp < position) {
+                // Déplace la position d'une largeur de plateau vers le sud.
+                posTemp += 1 * this.getControlleur().getParametre().LARGEUR_PLATEAU;
+                this.avancer(joueur, posTemp);
+            }
+        }
     }
 }
 

@@ -112,8 +112,8 @@ var Controlleur = {
     realiserAction: function(type, position=null, attaque=null) {
         switch (type) {
             case "jouerMouvement":
+                // Si mouvement amène les deux joueurs cote a cote, le combat commence.
                 var debutCombat = this.getMaitreDuJeu().jouerMouvement(position=position);
-                // Le mouvement amène les deux joueurs cote a cote, le combat commence.
                 if (debutCombat) {
                     this.getPage().dessinerCombat();
                 }
@@ -122,6 +122,7 @@ var Controlleur = {
                 }
                 break;
             case "jouerAttaque":
+            // Si un joueur est mort, la partie est fini.
                 var finDePartie = this.getMaitreDuJeu().gererCombat(attaque=attaque)
                 if (finDePartie[0]) {
                     this.getPage().dessinerFinPartie();
