@@ -146,7 +146,7 @@ MaitreDuJeu.getJoueurActif = function(actif=true) {
 }
 
 /**
-  * Avance un joueur sur une position temporaire, utilisé dans déplacer joueur.
+  * Avance un joueur sur une position temporaire, utilisé dans la méthode déplacer.
   * Effectue le changement d'arme si le joueur se positionne sur une cellule de
   * type arme.
   *
@@ -199,7 +199,8 @@ MaitreDuJeu.deplacer = function(joueur, position) {
     // Inférieur donc vers l'ouest ou vers le nord.
     if (position < posJoueur) {
         // Sur la meme ligne donc déplacement vers l'ouest.
-        if (String(position)[0] === String(posJoueur)[0]) {
+        // La condition position < 10 correspond au cas ou le joueur est sur la 1ere ligne.
+        if (String(position)[0] === String(posJoueur)[0] || position < 10) {
             while (posTemp > position) {
                 // Déplace la position du joueur d'une cellelule vers l'ouest.
                 posTemp -= 1;
@@ -218,7 +219,8 @@ MaitreDuJeu.deplacer = function(joueur, position) {
     // Supérieur donc vers l'est ou le sud.
     else {
         // Sur la meme ligne donc vers l'est.
-        if (String(position)[0] === String(posJoueur)[0]) {
+        // La condition position < 10 correspond au cas ou le joueur est sur la 1ere ligne.
+        if (String(position)[0] === String(posJoueur)[0] || position < 10) {
             while (posTemp < position) {
                 // Déplace la position du joueur d'une cellelule vers l'est.
                 posTemp += 1;
