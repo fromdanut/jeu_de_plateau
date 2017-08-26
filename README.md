@@ -1,6 +1,8 @@
 # NIBOR VS RIBNO
 
+
 ## Structure du code.
+
 
 Le code fonctionne avec 3 éléments principaux :
 
@@ -12,7 +14,9 @@ Chaque composant du jeu hérite du prototype Composant qui permet d'accéder au 
 
 Le Plateau est composé de Cellule qui peuvent être des Armes, des Obstacles.
 
+
 ## Modification par rapport aux consignes.
+
 
 Respecte l'ensemble des consignes avec quelques variantes :
 
