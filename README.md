@@ -1,8 +1,8 @@
 # NIBOR VS RIBNO
 
+Application réalisée dans le cadre de l'Activité "Créez un jeu au tour par tour en javascript" sur [openclassrooms](https://openclassrooms.com/courses/creez-un-jeu-de-plateau-tour-par-tour-en-javascript)
 
 ## Structure du code.
-
 
 Le code fonctionne avec 3 éléments principaux :
 
