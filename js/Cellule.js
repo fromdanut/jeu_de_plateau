@@ -10,11 +10,14 @@ Cellule.initCellule = function(controlleur, param) {
     this.setAccessible();
     this.setImg(param);
     this.setImgAccessible(param);
+    this.setHelp(param);
 }
 
 Cellule.init = function(controlleur, param) {
     this.initCellule(controlleur, param);
 }
+
+
 
 Cellule.getAccessible = function() {
     return this.accessible;
@@ -62,6 +65,19 @@ Cellule.getImg = function() {
         var img = "url(" + this.img + ")";
     }
     return img;
+}
+
+Cellule.setHelp = function(param) {
+    if (param.help) {
+        this.help = param.help;
+    }
+    else {
+        this.help = "Aucun message d'aide défini.";
+    }
+}
+
+Cellule.getHelp = function() {
+    return this.help;
 }
 
 /**

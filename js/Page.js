@@ -26,6 +26,27 @@ Page.creerCelluleElt = function(cellule, position) {
     // Ajoute l'image correspondant à la cellule.
     celluleElt.style.backgroundImage = cellule.getImg();
 
+    // Ajoute information pour l'aide au joueur dans 'p #help' sauf pour les
+    // joueurs et les vides car inutile.
+    var helpElt = document.getElementById('help');
+    if (!Joueur.isPrototypeOf(cellule) && !Vide.isPrototypeOf(cellule)) {
+        celluleElt.addEventListener('mouseenter', function(e){
+
+            helpElt.textContent = cellule.getHelp();// Ajoute l'help de la cellule à l'élément.
+            helpElt.style.display = "block";        // Affiche le div help.
+
+            // Cacule la position par rapport à la cible (celluleElt).
+            var left = e.target.offsetLeft + e.target.offsetParent.offsetLeft - 30;
+            var top = e.target.offsetTop + e.target.offsetParent.offsetTop - 30;
+            helpElt.style.left = String(left) + "px";
+            helpElt.style.top = String(top) + "px";
+        });
+        // Fait disparaitre l'help.
+        celluleElt.addEventListener('mouseleave', function(e){
+            helpElt.style.display = "none";
+        });
+    }
+
     // S'il ne s'agit pas d'un joueur.
     if (!Joueur.isPrototypeOf(cellule)) {
         // Rend le controlleur accessible depuis l'élément.

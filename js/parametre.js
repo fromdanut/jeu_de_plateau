@@ -36,38 +36,45 @@ var parametre = {
             degat: 10,
             img: "img/cellule/arme/arme_minimum.png",
             imgAccessible: "img/cellule/arme/arme_minimum_accessible.png",
+            help: "Arme de base, équivalent d'un cure dent ébréché.",
         },
         faible: {
             degat: 15,
             img: "img/cellule/arme/arme_faible.png",
             imgAccessible: "img/cellule/arme/arme_faible_accessible.png",
+            help: "Juste un petit canif, t'enflamme pas trop...",
         },
         moyen: {
             degat: 20,
             img: "img/cellule/arme/arme_moyen.png",
             imgAccessible: "img/cellule/arme/arme_moyen_accessible.png",
+            help: "Arme qui commence à ressembler à quelque chose.",
         },
         fort: {
             degat: 25,
             img: "img/cellule/arme/arme_fort.png",
             imgAccessible: "img/cellule/arme/arme_fort_accessible.png",
+            help: "Le hachoir de boris, attention ça coupe.",
         },
     },
 
     OBSTACLE: {
         img: "img/cellule/obstacle.png",
         imgAccessible: "img/cellule/obstacle.png",
+        help: "Obstacle infranchissable en pierre de mousse",
     },
 
     VORTEX: {
         img: "img/cellule/vortex.png",
         imgAccessible: "img/cellule/vortex_accessible.png",
+        help: "Le vortex te déplace au hasard sur le plateau",
     },
-
     ECHANGEUR: {
         img: "img/cellule/echangeur.png",
         imgAccessible: "img/cellule/echangeur_accessible.png",
+        help: "Echange ton arme avec celle de ton adversaire.",
     },
+
 
     VIDE: {
         img: "img/cellule/vide.png",

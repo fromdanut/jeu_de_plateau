@@ -89,3 +89,13 @@ body {
 #footer img {
     height: 30px;
 }
+
+#help {
+    background-color: #152025;
+    color: white;
+    border: solid black 1px;
+    border-radius: 7px;
+    position: absolute;
+    display: none;
+    padding: 2px 5px 2px 5px;
+}
