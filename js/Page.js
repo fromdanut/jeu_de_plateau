@@ -310,7 +310,7 @@ Page.dessinerFinPartie = function() {
     // Ajoute l'image du vainqueur.
     var vainqueur = this.getControlleur().getMaitreDuJeu().trouverVainqueur();
     var imgElt = document.createElement("img");
-    imgElt.src = vainqueur.imgVainqueur;
+    imgElt.src = vainqueur.getImgVainqueur();
     document.getElementById("combat").appendChild(imgElt);
 
     // Ajoute message de félicitation (augmente la taille de la police)

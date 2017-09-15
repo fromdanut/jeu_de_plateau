@@ -9,19 +9,18 @@ var Joueur = Object.create(Composant);
 Joueur.init = function(controlleur, arme, param, actif=false) {
     this.initComposant(controlleur)
     this.setArme(arme);
-    this.vie = 100;
+    this.setVie(100);
     this.setParam(param);
     this.setActif(actif);
     this.setPosition();
 }
 
 Joueur.setParam = function(param) {
-    /* Il faudra ajouter des get et set ici */
-    this.nom = param.nom;
-    this.img = param.img;
-    this.imgActif = param.imgActif;
-    this.imgCombat = param.imgCombat;
-    this.imgVainqueur = param.imgVainqueur;
+    this.setNom(param.nom);
+    this.setImg(param.img);
+    this.setImgActif(param.imgActif);
+    this.setImgCombat(param.imgCombat);
+    this.setImgVainqueur(param.imgVainqueur);
 }
 
 Joueur.getVie = function() {
@@ -34,13 +33,26 @@ Joueur.setVie = function(vie) {
     }
     else {
         console.log("Operation impossible : argument vie invalide.");
-    }
+    }    if (typeof vie === 'number') {
+            this.vie = vie;
+        }
+        else {
+            console.log("Operation impossible : argument vie invalide.");
+        }
 }
 
 Joueur.getNom = function() {
     return this.nom;
 }
 
+Joueur.setNom = function(nom) {
+    if (typeof nom === 'string') {
+        this.nom = nom;
+    }
+    else {
+        console.log("Operation impossible : argument nom invalide.");
+    }
+}
 
 Joueur.getActif = function() {
     return this.actif;
@@ -86,9 +98,53 @@ Joueur.getImg = function(param) {
     return img;
 }
 
+Joueur.setImg = function(img) {
+    if (typeof img === 'string') {
+        this.img = img;
+    }
+    else {
+        console.log("Operation impossible : argument img invalide.");
+    }
+}
+
+Joueur.setImgActif = function(imgActif) {
+    if (typeof imgActif === 'string') {
+        this.imgActif = imgActif;
+    }
+    else {
+        console.log("Operation impossible : argument imgActif invalide.");
+    }
+}
+
 Joueur.getImgCombat = function() {
     return this.imgCombat;
 }
+
+Joueur.setImgCombat = function(imgCombat) {
+    if (typeof imgCombat === 'string') {
+        this.imgCombat = imgCombat;
+    }
+    else {
+        console.log("Operation impossible : argument imgCombat invalide.");
+    }
+}
+
+Joueur.getImgVainqueur = function() {
+    return this.imgVainqueur;
+}
+
+Joueur.setImgVainqueur = function(imgVainqueur) {
+    if (typeof imgVainqueur === 'string') {
+        this.imgVainqueur = imgVainqueur;
+    }
+    else {
+        console.log("Operation impossible : argument imgCombat invalide.");
+    }
+}
+
+
+
+
 
 /**
   * Affecte une position (par défault à 0).
