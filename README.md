@@ -1,13 +1,11 @@
 # NIBOR VS RIBNO
 
-Application réalisée dans le cadre de l'Activité "Créez un jeu au tour par tour en javascript" sur [openclassrooms](https://openclassrooms.com/courses/creez-un-jeu-de-plateau-tour-par-tour-en-javascript).
-
-Visitez le site [web](https://jeu-de-plateau.herokuapp.com/index.html)
+Application réalisée dans le cadre de l'Activité "Créez un jeu au tour par tour en javascript" sur [openclassrooms](https://openclassrooms.com/courses/creez-un-jeu-de-plateau-tour-par-tour-en-javascript). Visitez le site [web](https://jeu-de-plateau.herokuapp.com/index.html).
 
 
 ## Structure du code.
 
-Le code fonctionne avec 3 éléments principaux :
+Il y a 3 éléments principaux :
 
 - Le Controlleur qui coordonne l'action du MaitreDuJeu et de la Page.
 - La Page est chargée de modifier le html via le DOM.
