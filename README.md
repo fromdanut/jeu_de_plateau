@@ -2,7 +2,7 @@
 
 Application réalisée dans le cadre de l'Activité "Créez un jeu au tour par tour en javascript" sur [openclassrooms](https://openclassrooms.com/courses/creez-un-jeu-de-plateau-tour-par-tour-en-javascript).
 
-Visitez le [site web](https://jeu-de-plateau.herokuapp.com/index.html)
+Visitez le site [web](https://jeu-de-plateau.herokuapp.com/index.html)
 
 
 ## Structure du code.
@@ -15,7 +15,7 @@ Le code fonctionne avec 3 éléments principaux :
 
 Chaque composant du jeu hérite du prototype Composant qui permet d'accéder au Controlleur depuis n'importe quel Prototype.
 
-Le Plateau est composé de Cellule qui peuvent être des Armes, des Obstacles.
+Le Plateau est composé de Cellule qui peuvent être des Armes ou des Obstacles.
 
 
 ## Modification par rapport aux consignes.
